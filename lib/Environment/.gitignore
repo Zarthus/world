@@ -1,0 +1,9 @@
+*
+!.gitignore
+!Development.php
+!Environment.php
+!EnvVar.php
+!EnvironmentInterface.php
+!Pages.php
+!Production.php
+!Tests.php

@@ -1,0 +1,15 @@
+/public
+/*.cache
+/.php-cs-fixer
+/private/html/css
+
+/vendor
+/composer.lock
+/tmp
+/ca
+/tests/coverage
+
+
+bin
+!bin/gen-ca.sh
+!bin/cli

@@ -1,0 +1,31 @@
+name: Deploy Pages
+on:
+    push:
+        branches:
+            - main
+env:
+    LIEFLAND_ENVIRONMENT: Pages
+
+jobs:
+    build:
+        concurrency: ci-${{ github.ref }}
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+            - name: Install dependencies
+              uses: php-actions/composer@v6
+              with:
+                  php_version: "8.1"
+                  command: 'install'
+            - name: Download sass
+              run: |
+                  npm install -g sass
+            - name: Publish (+coverage)
+              run: |
+                  composer publish:dev
+            - name: Deploy
+              uses: JamesIves/github-pages-deploy-action@v4.2.5
+              with:
+                  branch: gh-pages
+                  folder: public

@@ -1,0 +1,102 @@
+{
+    "name": "zarthus/world",
+    "description": "A html website's helper tools",
+    "type": "project",
+    "license": "MIT",
+    "version": "1.0",
+    "keywords": ["website", "static-site-generator", "static-site", "sass", "twig"],
+    "homepage": "https://world.liefland.net",
+    "readme": "README.md",
+    "authors": [
+        {
+            "name": "Jos Ahrens",
+            "homepage": "https://github.com/zarthus"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Zarthus\\World\\": "lib/",
+            "Zarthus\\World\\App\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Zarthus\\World\\Test\\Lib\\": "tests/lib/",
+            "Zarthus\\World\\Test\\Unit\\": "tests/Unit/lib/",
+            "Zarthus\\World\\Test\\Unit\\App\\": "tests/Unit/src/"
+        }
+    },
+    "require": {
+        "php": ">=8.1",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "ext-fileinfo": "*",
+        "league/commonmark": "^2.3",
+        "league/container": "^4.2",
+        "monolog/monolog": "^2.5",
+        "symfony/console": "^6.0",
+        "symfony/finder": "^6.0",
+        "twig/twig": "^3.3",
+        "zarthus/sass-bridge": "1.0-rc3"
+    },
+    "require-dev": {
+        "amphp/http-server": "^2.1",
+        "friendsofphp/php-cs-fixer": "^3.8",
+        "lctrs/psalm-psr-container-plugin": "^1.7",
+        "phpunit/php-code-coverage": "^9.2",
+        "phpunit/phpunit": "^9.5",
+        "psalm/plugin-phpunit": "^0.16.1",
+        "roave/security-advisories": "dev-latest",
+        "symfony/error-handler": "^6.0",
+        "symfony/filesystem": "^6.0",
+        "symfony/string": "^6.0",
+        "symfony/var-dumper": "^6.0",
+        "vimeo/psalm": "^4.22",
+        "zarthus/http-enums": "^1.0"
+    },
+    "scripts": {
+        "build": [
+            "cli multi compile:twig compile:sass copy:assets --async"
+        ],
+        "publish:dev": [
+            "@clean",
+            "@publish:production",
+            "@coverage",
+            "cli copy:coverage --allow-failure"
+        ],
+        "publish:production": [
+            "@clean",
+            "@build"
+        ],
+        "serve": [
+            "@build",
+            "cli webserver"
+        ],
+        "clean": "cli clean",
+        "test": [
+            "@test:unit"
+        ],
+        "lint": [
+            "@lint:cs",
+            "@psalm"
+        ],
+        "fix": [
+            "@fix:cs"
+        ],
+        "coverage": "LIEFLAND_ENVIRONMENT=Tests XDEBUG_MODE=coverage phpunit",
+        "psalm": "psalm --config=psalm.xml",
+        "lint:cs": "php-cs-fixer --config=.php-cs-fixer --dry-run fix --diff",
+        "fix:cs": "php-cs-fixer fix --config=.php-cs-fixer",
+        "test:unit": "LIEFLAND_ENVIRONMENT=Tests phpunit --no-coverage"
+    },
+    "config": {
+        "bin-dir": "bin",
+        "platform-check": true,
+        "sort-packages": true,
+        "allow-plugins": false,
+        "branch-alias": {
+            "dev-main": "1.0-dev"
+        }
+    }
+}

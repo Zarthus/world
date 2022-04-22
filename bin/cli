@@ -1,0 +1,13 @@
+#!/usr/bin/env php
+<?php
+
+use Zarthus\World\App;
+use Zarthus\World\App\Cli\Application;
+
+require __DIR__ . '/../vendor/autoload.php';
+
+App\Bootstrap::init();
+
+App\App::getContainer()
+    ->get(Application::class)
+    ->exec();

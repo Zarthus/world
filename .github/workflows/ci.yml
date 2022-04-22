@@ -1,0 +1,35 @@
+name: CI
+on: [push]
+
+env:
+    LIEFLAND_ENVIRONMENT: Pages
+
+jobs:
+    build-test:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - name: Install dependencies
+              uses: php-actions/composer@v6
+              with:
+                  php_version: "8.1"
+                  command: 'install'
+            - name: Download sass
+              run: |
+                  npm install -g sass
+            - name: Run psalm
+              run: |
+                  composer lint:psalm
+              continue-on-error: true
+            - name: Run code-style
+              run: |
+                  composer lint:cs
+            - name: Run Unit Tests
+              run: |
+                  composer test:unit
+            - name: Validate composer.json
+              run: |
+                  composer clean
+            - name: Validate composer.json
+              run: |
+                  composer validate

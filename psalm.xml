@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<psalm
+        errorLevel="2"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="https://getpsalm.org/schema/config"
+        xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+        cacheDirectory="./tmp/psalm"
+>
+    <projectFiles>
+        <directory name="lib"/>
+        <directory name="src"/>
+
+        <!--
+            todo: psalm phpunit plugin is not properly functioning
+            <directory name="tests/lib"/>
+            <directory name="tests/Unit"/>
+        -->
+    </projectFiles>
+
+    <plugins>
+        <pluginClass class="Psalm\PhpUnitPlugin\Plugin"/>
+    </plugins>
+</psalm>

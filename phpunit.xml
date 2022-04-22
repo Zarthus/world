@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/sebastianbergmann/phpunit/main/phpunit.xsd"
+    bootstrap="vendor/autoload.php"
+    convertDeprecationsToExceptions="true"
+    colors="true"
+    verbose="true"
+    failOnRisky="true"
+    failOnWarning="true"
+    failOnSkipped="true"
+    failOnIncomplete="true"
+    cacheResultFile="./tmp/phpunit.cache"
+>
+    <testsuites>
+        <testsuite name="unit">
+            <directory>tests/Unit/lib</directory>
+            <directory>tests/Unit/src</directory>
+        </testsuite>
+    </testsuites>
+
+    <coverage>
+        <report>
+            <html outputDirectory="tests/coverage/html" />
+        </report>
+        <include>
+            <directory suffix=".php">src</directory>
+            <directory suffix=".php">lib</directory>
+        </include>
+    </coverage>
+
+    <php>
+        <const name="PHPUNIT_TESTSUITE" value="true" />
+
+        <env name="LIEFLAND_ENVIRONMENT" value="Tests" />
+    </php>
+</phpunit>
