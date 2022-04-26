@@ -73,10 +73,8 @@ final class CopyAssets implements CommandInterface
     {
         return Finder::create()
             ->in($in)
-            ->exclude('articles')
-            ->exclude('html')
-            ->exclude('sass')
-            ->exclude('scss')
+            ->path('assets')
+            ->path('javascript')
             ->ignoreVCS(true)
             ->depth(0)
             ->directories();

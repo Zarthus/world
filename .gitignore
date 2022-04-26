@@ -13,3 +13,8 @@
 bin
 !bin/gen-ca.sh
 !bin/cli
+
+## Environment
+/.env
+/.env.*
+!/.env.dist

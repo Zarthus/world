@@ -21,11 +21,11 @@ jobs:
             - name: Download sass
               run: |
                   npm install -g sass
-            - name: Publish (+coverage)
+            - name: Build
               run: |
-                  composer publish:dev
+                  composer publish:pages
             - name: Deploy
               uses: JamesIves/github-pages-deploy-action@v4.2.5
               with:
-                  branch: gh-pages
+                  branch: www
                   folder: public

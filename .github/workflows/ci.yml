@@ -2,7 +2,7 @@ name: CI
 on: [push]
 
 env:
-    LIEFLAND_ENVIRONMENT: Pages
+    LIEFLAND_ENVIRONMENT: Tests
 
 jobs:
     build-test:

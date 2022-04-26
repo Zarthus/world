@@ -6,54 +6,21 @@ namespace Zarthus\World\App\Cli\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
-use Zarthus\World\App\Cli\ResolvableNameTrait;
-use Zarthus\World\App\LogAwareTrait;
+use Zarthus\World\App\Cli\AbstractCompileCommand;
 use Zarthus\World\App\Path;
-use Zarthus\World\Command\CommandInterface;
-use Zarthus\World\Command\CommandResult;
-use Zarthus\World\Compiler\CompilerOptions;
-use Zarthus\World\Compiler\SassCompiler;
-use Zarthus\World\Exception\CompilerException;
+use Zarthus\World\Compiler\CompilerInterface;
+use Zarthus\World\Compiler\Compilers\SassCompiler;
 
-final class CompileSassCommand implements CommandInterface
+final class CompileSassCommand extends AbstractCompileCommand
 {
-    use ResolvableNameTrait;
-    use LogAwareTrait;
-
     public function __construct(
         private readonly SassCompiler $compiler,
     ) {
     }
 
-    public function execute(InputInterface $input, OutputInterface $output): CommandResult
+    protected function getCompiler(): CompilerInterface
     {
-        $errored = false;
-
-        [
-            $inDir,
-            $outDir,
-        ] = [
-            (string) $input->getArgument('directory-in'),
-            (string) $input->getArgument('directory-out'),
-        ];
-        $style = (new SymfonyStyle($input, $output));
-
-        try {
-            $this->compiler->compile(new CompilerOptions($inDir, $outDir, false));
-        } catch (CompilerException $e) {
-            $errored = true;
-            $style->error($e->getMessage());
-        }
-
-        if ($errored) {
-            $style->caution("There were some compilation errors!");
-            return CommandResult::Error;
-        }
-        $style->success("Compiled sources into $outDir");
-        return CommandResult::Ok;
+        return $this->compiler;
     }
 
     public function configure(Command $command): void
@@ -62,13 +29,9 @@ final class CompileSassCommand implements CommandInterface
         $outDir = Path::css(false);
 
         $command->setAliases(['compile:scss']);
-        $command->setDescription('Compiles template sources into rendered html');
+        $command->setDescription('Compiles SASS and SCSS sources');
+
         $command->addArgument('directory-in', InputArgument::OPTIONAL, 'The sass input directory or file', $inDir);
         $command->addArgument('directory-out', InputArgument::OPTIONAL, 'The css output directory or file', $outDir);
-    }
-
-    public function supportsAsync(): bool
-    {
-        return true;
     }
 }

@@ -1,0 +1,10 @@
+{% set output = {
+    'name': appName,
+    'version': appVersion,
+    'environment': environment,
+    'compiled-at': "now"|date(),
+    'links': [
+        'https://github.com/Zarthus/world'
+    ],
+} %}
+{{ output | json_encode(constant('JSON_PRETTY_PRINT')) | raw }}

@@ -4,16 +4,36 @@ declare(strict_types=1);
 
 namespace Zarthus\World\Exception;
 
+use Zarthus\World\Compiler\CompilerInterface;
 use Zarthus\World\Compiler\CompilerOptions;
 
 final class TemplateNotFoundException extends CompilerException
 {
-    public function __construct(string $template, CompilerOptions $options, ?\Throwable $previous = null)
+    /**
+     * @param string $template
+     * @param CompilerOptions $options
+     * @param null|class-string<CompilerInterface> $compiler
+     * @param \Throwable|null $previous
+     */
+    public function __construct(
+        private readonly string $template,
+        private readonly CompilerOptions $options,
+        ?string $compiler = null,
+        ?\Throwable $previous = null,
+    ) {
+        parent::__construct(
+            $compiler,
+            sprintf(
+                'Template "%s" in "%s" not found',
+                $this->template,
+                $this->options->getInDirectory(),
+            ),
+            previous: $previous
+        );
+    }
+
+    public function getTemplate(): string
     {
-        parent::__construct(sprintf(
-            'Template "%s" in "%s" not found',
-            $template,
-            $options->getInDirectory(),
-        ), previous: $previous);
+        return $this->template;
     }
 }

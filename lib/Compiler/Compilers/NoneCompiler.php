@@ -2,12 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Zarthus\World\Compiler;
+namespace Zarthus\World\Compiler\Compilers;
 
 use Zarthus\World\App\LogAwareTrait;
+use Zarthus\World\Compiler\CompileResult;
+use Zarthus\World\Compiler\CompilerInterface;
+use Zarthus\World\Compiler\CompilerOptions;
+use Zarthus\World\Compiler\CompileType;
 use Zarthus\World\Container\Container;
 use Zarthus\World\Environment\Environment;
 use Zarthus\World\Exception\CompilerException;
+use Zarthus\World\Exception\TemplateNotFoundException;
 
 final class NoneCompiler implements CompilerInterface
 {
@@ -28,12 +33,12 @@ final class NoneCompiler implements CompilerInterface
 
     public function compile(CompilerOptions $options): void
     {
-        throw new CompilerException("NoneCompiler does not support compiling directories.");
+        throw new CompilerException($this::class, 'This compiler does not support compiling directories.');
     }
 
     public function compileTemplate(CompilerOptions $options, string $template): void
     {
-        // no-op
+        throw new TemplateNotFoundException($template, $options, $this::class);
     }
 
     public function renderTemplate(CompilerOptions $options, string $template): CompileResult

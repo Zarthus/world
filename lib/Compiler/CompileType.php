@@ -9,5 +9,5 @@ enum CompileType
     case Plain;
     case Css;
     case Json;
-    case Html;
+    case Twig;
 }

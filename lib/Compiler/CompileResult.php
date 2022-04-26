@@ -42,7 +42,7 @@ final class CompileResult implements \Stringable
             CompileType::Plain => 'text/plain',
             CompileType::Css => 'text/css',
             CompileType::Json => 'application/json',
-            CompileType::Html => 'text/html',
+            CompileType::Twig => 'text/html',
         };
     }
 }

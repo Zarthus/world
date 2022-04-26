@@ -2,11 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Zarthus\World\Compiler;
+namespace Zarthus\World\Compiler\Compilers;
 
 use League\CommonMark\CommonMarkConverter;
 use Symfony\Component\Finder\Finder;
 use Zarthus\World\App\LogAwareTrait;
+use Zarthus\World\Compiler\CompileResult;
+use Zarthus\World\Compiler\CompilerInterface;
+use Zarthus\World\Compiler\CompilerOptions;
+use Zarthus\World\Compiler\CompilerSupport;
+use Zarthus\World\Compiler\CompileType;
 use Zarthus\World\Container\Container;
 use Zarthus\World\Environment\Environment;
 use Zarthus\World\Exception\CompilerException;
@@ -16,21 +21,18 @@ final class MarkdownCompiler implements CompilerInterface
 {
     use LogAwareTrait;
 
+    private readonly CompilerSupport $compilerSupport;
+
     public function __construct(
         private readonly Container $container,
         private readonly Environment $environment,
     ) {
+        $this->compilerSupport = new CompilerSupport(['articles'], ['md']);
     }
 
     public function supports(CompilerOptions $options, ?string $template): bool
     {
-        return str_contains($options->getOutDirectory(), 'articles/') ||
-            str_contains($options->getInDirectory(), 'articles/') ||
-            (
-                null !== $template &&
-                !str_contains($template, '..') &&
-                str_ends_with($template, '.md')
-            );
+        return $this->compilerSupport->supports($options, $template);
     }
 
     public function compile(CompilerOptions $options): void
@@ -54,7 +56,7 @@ final class MarkdownCompiler implements CompilerInterface
     {
         $this->getLogger()->info('Compiling: ' . $template);
 
-        [$in, $out] = $this->validate($options, $template);
+        ['in' => $in, 'out' => $out] = $this->validate($options, $template);
         $engine = $this->createEngine();
 
         $input = file_get_contents($in);
@@ -64,11 +66,15 @@ final class MarkdownCompiler implements CompilerInterface
 
     public function renderTemplate(CompilerOptions $options, string $template): CompileResult
     {
-        [$in, $_out] = $this->validate($options, $template);
+        ['in' => $in] = $this->validate($options, $template);
         $engine = $this->createEngine();
 
         $input = file_get_contents($in);
-        return new CompileResult(CompileType::Html, $engine->convert($input)->getContent());
+        return new CompileResult(
+            CompileType::Twig,
+            $engine->convert($input)->getContent(),
+            mime_content_type($in),
+        );
     }
 
 
@@ -78,7 +84,9 @@ final class MarkdownCompiler implements CompilerInterface
     }
 
     /**
-     * @return array{in: string, out: string}
+     * @return array{in:string, out:string}
+     *
+     * @throws CompilerException
      */
     private function validate(CompilerOptions $options, string $template): array
     {
@@ -88,13 +96,13 @@ final class MarkdownCompiler implements CompilerInterface
         ];
 
         if (!file_exists($in)) {
-            throw new TemplateNotFoundException($template, $options);
+            throw new TemplateNotFoundException($template, $options, $this::class);
         }
 
         $dir = dirname($out);
         if (!is_dir($dir)) {
             if (!is_dir($dir) && !mkdir($dir, recursive: true) && !is_dir($dir)) {
-                throw new CompilerException('Cannot create directory: ' . $dir);
+                throw new CompilerException($this::class, 'Cannot create directory: ' . $dir);
             }
         }
 

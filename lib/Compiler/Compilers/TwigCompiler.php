@@ -2,18 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Zarthus\World\Compiler;
+namespace Zarthus\World\Compiler\Compilers;
 
 use Symfony\Component\Finder\Finder;
 use Twig\Environment as TwigEnvironment;
 use Twig\Error\Error as TwigError;
+use Twig\Extension\CoreExtension;
 use Twig\Extension\DebugExtension;
 use Twig\Extension\ProfilerExtension;
 use Twig\Loader\FilesystemLoader as TwigFsLoader;
 use Twig\Profiler\Profile;
 use Twig\TwigFunction;
+use Zarthus\World\App\App;
 use Zarthus\World\App\LogAwareTrait;
 use Zarthus\World\App\Path;
+use Zarthus\World\Compiler\CompileResult;
+use Zarthus\World\Compiler\CompilerInterface;
+use Zarthus\World\Compiler\CompilerOptions;
+use Zarthus\World\Compiler\CompilerSupport;
+use Zarthus\World\Compiler\CompileType;
 use Zarthus\World\Container\Container;
 use Zarthus\World\Environment\Environment;
 use Zarthus\World\Environment\EnvVar;
@@ -25,29 +32,40 @@ final class TwigCompiler implements CompilerInterface
 {
     use LogAwareTrait;
 
+    private readonly CompilerSupport $compilerSupport;
+
     public function __construct(
         private readonly Container $container,
-        private readonly Environment $environment
+        private readonly Environment $environment,
     ) {
+        $this->compilerSupport = new CompilerSupport(['api', 'html'], ['twig']);
     }
 
     public function supports(CompilerOptions $options, ?string $template): bool
     {
-        try {
-            $this->validate($options);
-        } catch (CompilerException) {
+        if (!$this->compilerSupport->supports($options, $template)) {
             return false;
         }
 
-        if (null !== $template) {
-            return $this->createEngine($options)->getLoader()->exists($template);
+        if ($template === null) {
+            // Partial support is offered: We compile .json.twig files in `/api`,
+            // Which means it only applies to cases where $template is non-null.
+            if (str_contains($options->getInDirectory(), 'api')) {
+                return true;
+            }
+
+            return true;
         }
-        return false;
+
+        return $this->createEngine($options)->getLoader()->exists($template);
     }
 
     public function compile(CompilerOptions $options): void
     {
-        $this->validate($options);
+        if (!$this->compilerSupport->supports($options, null)) {
+            throw new CompilerException($this::class, 'Compiler does not support this directory');
+        }
+
         $engine = $this->createEngine($options);
 
         $finder = new Finder();
@@ -61,7 +79,7 @@ final class TwigCompiler implements CompilerInterface
             }
 
             $path = str_replace($options->getInDirectory(), '', $fileInfo->getPath());
-            $template = $this->normalizeTemplate($path . '/' . $fileInfo->getFilenameWithoutExtension());
+            $template = $this->normalizeTemplate($path . '/' . $fileInfo->getFilenameWithoutExtension(), $options->getInDirectory());
             $contents = $this->compileFile($engine, $options, $template);
             $fullPath = $this->createOutPath($options, $template);
 
@@ -71,6 +89,10 @@ final class TwigCompiler implements CompilerInterface
 
     public function compileTemplate(CompilerOptions $options, string $template): void
     {
+        if (!$this->compilerSupport->supports($options, $template)) {
+            throw new TemplateIllegalException($template, $this::class);
+        }
+
         $contents = $this->renderTemplate($options, $template);
         $fullPath = $this->createOutPath($options, $template);
 
@@ -79,12 +101,18 @@ final class TwigCompiler implements CompilerInterface
 
     public function renderTemplate(CompilerOptions $options, string $template): CompileResult
     {
-        $this->validate($options);
+        if (!$this->compilerSupport->supports($options, $template)) {
+            throw new TemplateIllegalException($template, $this::class);
+        }
+
         $engine = $this->createEngine($options);
+        $template = $this->normalizeTemplate($template, $options->getInDirectory());
 
-        $template = $this->normalizeTemplate($template);
-
-        return new CompileResult(CompileType::Html, $this->compileFile($engine, $options, $template));
+        return new CompileResult(
+            CompileType::Twig,
+            $this->compileFile($engine, $options, $template),
+            mime_content_type($options->getOutDirectory() . '/' . $template),
+        );
     }
 
     /**
@@ -99,20 +127,29 @@ final class TwigCompiler implements CompilerInterface
 
         if (!$engine->getLoader()->exists($template)) {
             $this->getLogger()->debug("File $template does not exist.");
-            throw new TemplateNotFoundException($template, $options);
+            throw new TemplateNotFoundException($template, $options, $this::class);
         }
 
         try {
             $compiled = $engine->render($template);
         } catch (TwigError $e) {
-            $this->getLogger()->critical("Compilation of $template failed due to a compiler error.");
-            throw new CompilerException($e->getMessage(), 0, $e);
+            $this->getLogger()->critical(implode("\n", [
+                "Compilation of $template failed due to a compiler error: ",
+                $e->getMessage() . ' - ' . $e->getSourceContext()?->getName(),
+            ]), ['exception' => $e]);
+            throw new CompilerException($this::class, $e->getMessage(), previous: $e);
         } catch (\Exception $e) {
-            $this->getLogger()->critical("Compilation of $template failed due to an Exception being thrown.");
-            throw new CompilerException($e->getMessage(), 0, $e);
+            $this->getLogger()->critical(
+                "Compilation of $template failed due to an Exception being thrown. (" . $e::class . " . {$e->getMessage()}",
+                ['exception' => $e]
+            );
+            throw new CompilerException($this::class, $e->getMessage(), previous: $e);
         } catch (\Throwable $throwable) {
-            $this->getLogger()->critical("Compilation of $template failed due to an error in the template.");
-            throw $throwable;
+            $this->getLogger()->critical(
+                "Compilation of $template failed due to an error in the template. (" . $throwable::class . " . {$throwable->getMessage()}",
+                ['exception' => $throwable]
+            );
+            throw new CompilerException($this::class, $throwable::class . ' ' . $throwable->getMessage(), previous: $throwable);
         }
 
         return $compiled;
@@ -122,16 +159,24 @@ final class TwigCompiler implements CompilerInterface
     {
         $loader = new TwigFsLoader([$options->getInDirectory()], $options->getInDirectory());
         $twig = new TwigEnvironment($loader, [
-            'cache' => Path::tmp() . '/twig',
+            'cache' => $this->environment->getBool(EnvVar::Development) ? false : Path::tmp() . '/twig',
             'debug' => $this->environment->getBool(EnvVar::Development),
             'strict_variables' => true,
             'optimizations' => $this->environment->getBool(EnvVar::Development) ? 0 : -1,
+            'autoescape' => 'html',
         ]);
 
         // Assigns global variables to all templates.
+        $twig->addGlobal('appName', App::name());
+        $twig->addGlobal('appVersion', App::version());
         $twig->addGlobal('environment', $this->environment->getString(EnvVar::Name));
         $twig->addGlobal('development', $this->environment->getBool(EnvVar::Development));
         $twig->addGlobal('language', 'en');
+
+        /** @var CoreExtension $core */
+        $core = $twig->getExtension(CoreExtension::class);
+        $core->setDateFormat(\DateTimeInterface::ATOM);
+        $core->setTimezone(new \DateTimeZone('UTC'));
 
         if ($this->environment->getBool(EnvVar::Development)) {
             $twig->addExtension(new DebugExtension());
@@ -149,38 +194,26 @@ final class TwigCompiler implements CompilerInterface
         return $twig;
     }
 
-    private function validate(CompilerOptions $options): void
-    {
-        [$in, $out] = [
-            $options->getInDirectory(),
-            $options->getOutDirectory(),
-        ];
-
-        if (!is_dir($in)) {
-            throw new CompilerException("Directory '$in' does not exist.");
-        }
-
-        if (!is_dir($out)) {
-            throw new CompilerException("Directory '$out' does not exist.");
-        }
-
-        if (__DIR__ === $in || __DIR__ === $out) {
-            throw new CompilerException("Cannot target current directory");
-        }
-    }
-
     private function createOutPath(
         CompilerOptions $options,
         string $template,
-        string $appendExtension = '.html'
+        ?string $appendExtension = null
     ): string {
-        return $options->getOutDirectory()
-            . '/'
-            . mb_strtolower(str_replace('.twig', '', $template))
-            . $appendExtension;
+
+        if (null === $appendExtension) {
+            // there is already an extension (e.g. .json.twig, .html.twig)
+            if (preg_match('@\.[a-z\d]+$@', str_replace('.twig', '', $template))) {
+                $appendExtension = '';
+            }
+
+            $appendExtension ??= '.html';
+        }
+
+        $normalizedTemplate = str_replace('.twig', $appendExtension, $template);
+        return $options->getOutDirectory() . '/' .  $normalizedTemplate;
     }
 
-    private function normalizeTemplate(string $template): string
+    private function normalizeTemplate(string $template, string $path): string
     {
         if (str_ends_with($template, '/')) {
             $template .= 'index';
@@ -189,13 +222,11 @@ final class TwigCompiler implements CompilerInterface
             $template = ltrim($template, '/');
         }
 
-        if (str_contains($template, '.')) {
-            if (str_contains($template, '..')) {
-                throw new TemplateIllegalException($template);
+        $tryFiles = [$template, $template . '.twig'];
+        foreach ($tryFiles as $file) {
+            if (file_exists($path . '/' . $file)) {
+                return $file;
             }
-
-            // support resources or files that don't need compilation, e.g. favicon.ico, script.js
-            return $template;
         }
 
         return trim($template) . '.twig';
@@ -205,7 +236,7 @@ final class TwigCompiler implements CompilerInterface
     {
         $dir = dirname($fullPath);
         if (!is_dir($dir) && !mkdir($dir, recursive: true) && !is_dir($dir)) {
-            throw new CompilerException('Cannot create directory: ' . $dir);
+            throw new CompilerException($this::class, 'Cannot create directory: ' . $dir);
         }
         file_put_contents($fullPath, $contents);
     }

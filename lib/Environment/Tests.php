@@ -20,7 +20,7 @@ final class Tests implements EnvironmentInterface
             EnvVar::HttpListeners => [],
             EnvVar::HttpCertificatePath => null,
             EnvVar::HttpBaseDir => '/',
-            EnvVar::Sass => false,
+            EnvVar::Sass => true,
             EnvVar::Compress => false,
         };
     }
