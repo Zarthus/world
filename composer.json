@@ -62,7 +62,7 @@
         "cli": "@php bin/cli",
 
         "build": ["@build:async"],
-        "serve": ["@build", "@cli webserver"],
+        "serve": ["@build", "Composer\\Config::disableProcessTimeout", "@cli webserver"],
         "test": ["@test:unit", "@test:system"],
         "lint": ["@lint:cs", "@lint:psalm"],
         "fix": ["@fix:cs"],
