@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Zarthus\World\Test\Lib;
+namespace Zarthus\World\Test\Framework;
 
 use PHPUnit\Framework\TestCase;
 use Zarthus\World\App\App;

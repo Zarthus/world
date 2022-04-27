@@ -9,7 +9,7 @@ use Zarthus\World\App\Path;
 use Zarthus\World\Compiler\CompilerInterface;
 use Zarthus\World\Compiler\CompilerOptions;
 use Zarthus\World\Compiler\Compilers\GroupCompiler;
-use Zarthus\World\Test\Lib\ContainerAwareTestCase;
+use Zarthus\World\Test\Framework\ContainerAwareTestCase;
 
 final class CompilerSupportCollisionTest extends ContainerAwareTestCase
 {

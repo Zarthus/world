@@ -21,7 +21,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Zarthus\\World\\Test\\Lib\\": "tests/lib/",
+            "Zarthus\\World\\Test\\Framework\\": "tests/Framework/",
             "Zarthus\\World\\Test\\System\\": "tests/System/lib/",
             "Zarthus\\World\\Test\\System\\App\\": "tests/System/src/",
             "Zarthus\\World\\Test\\Unit\\": "tests/Unit/lib/",

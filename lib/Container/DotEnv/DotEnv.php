@@ -23,6 +23,7 @@ final class DotEnv
 
     /**
      * @psalm-suppress PossiblyInvalidCast
+     * @psalm-suppress InternalMethod
      * @return bool if the env was modified.
      */
     public static function fromEnvironment(?EnvironmentInterface $environment): bool

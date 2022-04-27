@@ -10,8 +10,8 @@ use Zarthus\World\App\App;
 use Zarthus\World\App\Cli\Application;
 use Zarthus\World\Command\CommandResult;
 use Zarthus\World\Exception\FatalAppException;
-use Zarthus\World\Test\Lib\Cli\ExceptionCommand;
-use Zarthus\World\Test\Lib\Cli\TestCommand;
+use Zarthus\World\Test\Framework\Cli\ExceptionCommand;
+use Zarthus\World\Test\Framework\Cli\TestCommand;
 
 final class ApplicationTest extends TestCase
 {
