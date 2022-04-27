@@ -1,5 +1,6 @@
 *
 !.gitignore
+!Debug.php
 !Development.php
 !Environment.php
 !EnvVar.php

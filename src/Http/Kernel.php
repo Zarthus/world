@@ -48,7 +48,7 @@ final class Kernel
     {
         $this->logger = clone App::getLogger('Kernel');
         $this->logger->pushHandler(
-            new RotatingFileHandler(Path::tmp() . '/log/http.log', 2, $this->environment->getInt(EnvVar::LogLevel)),
+            new RotatingFileHandler(Path::tmp() . '/log/http.log', 2, $this->environment->get(EnvVar::LogLevel)),
         );
     }
 

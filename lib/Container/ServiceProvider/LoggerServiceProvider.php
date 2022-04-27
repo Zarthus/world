@@ -30,7 +30,7 @@ final class LoggerServiceProvider extends AbstractServiceProvider
         $logger = new Logger(
             App::name(),
             [
-                new StreamHandler(STDOUT, $environment->getInt(EnvVar::LogLevel), true, null, false),
+                new StreamHandler(STDOUT, $environment->get(EnvVar::LogLevel), true, null, false),
             ],
             [
             ],
