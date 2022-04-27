@@ -10,7 +10,7 @@ In my particular case, I use it for world building.
 #### How do I use it for myself?
 
 Provided you're comfortable with a stack of PHP (twig), sass, javascript, and markdown - 
-fork this repository, remove the contents in `www/`, and you're pretty much good-to-go.
+fork this repository, remove the contents in `private/`, and you're pretty much good-to-go.
 
 See the installation instructions for how to install & run this software.
 

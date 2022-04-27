@@ -54,7 +54,7 @@ final class MarkdownCompiler implements CompilerInterface
 
     public function compileTemplate(CompilerOptions $options, string $template): void
     {
-        $this->getLogger()->info('Compiling: ' . $template);
+        $this->getLogger()->debug('Compiling: ' . $template);
 
         ['in' => $in, 'out' => $out] = $this->validate($options, $template);
         $engine = $this->createEngine();

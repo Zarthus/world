@@ -71,7 +71,7 @@
         "test:unit": "LIEFLAND_ENVIRONMENT=Tests phpunit --testsuite=unit --no-coverage",
         "test:system": "LIEFLAND_ENVIRONMENT=Tests phpunit --testsuite=system --no-coverage",
 
-        "build:async": "@cli multi compile copy:assets --async",
+        "build:async": "@cli multi --async compile copy:assets",
         "build:coverage": "LIEFLAND_ENVIRONMENT=Tests XDEBUG_MODE=coverage phpunit",
 
         "lint:psalm": "psalm --config=psalm.xml",
@@ -84,7 +84,8 @@
         ],
         "publish:pages": [
             "@publish:production",
-            "@publish:coverage"
+            "@publish:coverage",
+            "@cli publish:pages --nojekyll --cname --errorpages"
         ],
         "publish:production": [
             "@clean",

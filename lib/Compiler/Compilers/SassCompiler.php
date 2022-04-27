@@ -83,7 +83,6 @@ final class SassCompiler implements CompilerInterface
 
     private function getTemplatePath(string $path, string $template): string
     {
-        $this->getLogger()->error("PATH=$path");
         return $path . '/' . $template;
     }
 }
