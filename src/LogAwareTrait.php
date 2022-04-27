@@ -12,7 +12,7 @@ trait LogAwareTrait
 {
     private function getLogger(): Logger
     {
-        if (($this instanceof Command || $this instanceof CommandInterface) && null !== $this->getName()) {
+        if (($this instanceof Command || $this instanceof CommandInterface)) {
             return App::getLogger("cmd::" . $this->getName());
         }
         return App::getLogger(static::class);

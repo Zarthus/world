@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Zarthus\World\Test\System\Compiler;
@@ -13,6 +14,11 @@ use Zarthus\World\Test\Framework\ContainerAwareTestCase;
 
 final class CompilerSupportCollisionTest extends ContainerAwareTestCase
 {
+    // Not all conflicts are bad, edge cases exist:
+    private const ALLOW_CONFLICTS_BETWEEN = [
+        'api|(null)',
+    ];
+
     /**
      * Asserts that:
      * - For every compiler there is, it does not collide with other compilers on matches
@@ -48,15 +54,18 @@ final class CompilerSupportCollisionTest extends ContainerAwareTestCase
                 $supports = $compiler->supports($options, $template);
 
                 if ($supported && $supports) {
-                    $collisions[] = sprintf("Both %s and %s support: (Directory: %s) (Template: %s)", $compiler::class, $supported, $relativeBaseDir ?? '/', $template ?? '(null)');
+                    if (in_array($relativeBaseDir . '|' . ($template ?? '(null)'), self::ALLOW_CONFLICTS_BETWEEN, true)) {
+                        continue;
+                    }
+                    $collisions[] = sprintf("Both %s and %s support: (Directory: %s) (Template: %s)", $compiler::class, $supported, $relativeBaseDir, $template ?? '(null)');
                 }
 
                 if ($supports) {
                     $supported = $compiler::class;
                 }
             }
-            if ($supported === null) {
-                $collisions[] = sprintf("No compilers support: (Directory: %s) (Template: %s)", $relativeBaseDir ?? '/', $template ?? '(null)');
+            if (null === $supported) {
+                $collisions[] = sprintf("No compilers support: (Directory: %s) (Template: %s)", $relativeBaseDir, $template ?? '(null)');
             }
         }
 
@@ -90,6 +99,6 @@ final class CompilerSupportCollisionTest extends ContainerAwareTestCase
     private function getRelativeBaseDir(string $relativePathName): string
     {
         $count = substr_count($relativePathName, '/');
-        return $count === 0 ? $relativePathName : dirname($relativePathName, $count);
+        return 0 === $count ? $relativePathName : dirname($relativePathName, $count);
     }
 }

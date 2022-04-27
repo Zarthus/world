@@ -34,6 +34,7 @@
         "ext-json": "*",
         "ext-mbstring": "*",
         "ext-fileinfo": "*",
+        "ext-intl": "*",
         "league/commonmark": "^2.3",
         "league/container": "^4.2",
         "monolog/monolog": "^2.5",
@@ -58,18 +59,19 @@
         "zarthus/http-enums": "^1.0"
     },
     "scripts": {
-        "cli": "cli",
+        "cli": "@php bin/cli",
+
         "build": ["@build:async"],
-        "clean": ["cli clean"],
-        "serve": ["@build", "cli webserver"],
-        "test": ["@test:unit"],
+        "serve": ["@build", "@cli webserver"],
+        "test": ["@test:unit", "@test:system"],
         "lint": ["@lint:cs", "@lint:psalm"],
         "fix": ["@fix:cs"],
+        "clean": ["@cli clean:project --allow-failure"],
 
+        "test:unit": "LIEFLAND_ENVIRONMENT=Tests phpunit --testsuite=unit --no-coverage",
+        "test:system": "LIEFLAND_ENVIRONMENT=Tests phpunit --testsuite=system --no-coverage",
 
-        "test:unit": "LIEFLAND_ENVIRONMENT=Tests phpunit --no-coverage",
-
-        "build:async": "cli multi compile copy:assets --async",
+        "build:async": "@cli multi compile copy:assets --async",
         "build:coverage": "LIEFLAND_ENVIRONMENT=Tests XDEBUG_MODE=coverage phpunit",
 
         "lint:psalm": "psalm --config=psalm.xml",
@@ -90,12 +92,12 @@
         ],
         "publish:coverage": [
             "@build:coverage",
-            "cli copy:coverage --allow-failure"
+            "@cli copy:coverage --allow-failure"
         ],
 
-        "post-root-package-install": [
-            "@php -r \"file_exists('.env') || copy('.env.dist', '.env');\"",
-            "@php -r \"file_exists('.php-cs-fixer') || copy('.php-cs-fixer.dist', '.php-cs-fixer');\""
+        "post-install-cmd": [
+            "@php -r \"file_exists('.env') || (copy('.env.dist', '.env') && print('Copied over environment dist file!' . PHP_EOL));\"",
+            "@php -r \"file_exists('.php-cs-fixer') || (copy('.php-cs-fixer.dist', '.php-cs-fixer') && print('Copied over php-cs-fixer dist file!' . PHP_EOL));\""
         ]
     },
     "config": {

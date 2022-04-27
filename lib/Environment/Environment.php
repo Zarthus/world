@@ -2,6 +2,9 @@
 
 namespace Zarthus\World\Environment;
 
+/**
+ * @psalm-suppress PossiblyInvalidCast
+ */
 final class Environment implements \Stringable
 {
     public function __construct(
@@ -9,12 +12,16 @@ final class Environment implements \Stringable
     ) {
     }
 
-    public function get(EnvVar $name): array|bool|int|string|null
+    /** @return scalar|null|array */
+    public function get(EnvVar $name)
     {
         return $this->env->get($name);
     }
 
-    /** @return string[] */
+    /**
+     * @return string[]
+     * @psalm-suppress MixedReturnTypeCoercion
+     */
     public function getStringArray(EnvVar $name): array
     {
         return (array) $this->env->get($name);
@@ -29,7 +36,7 @@ final class Environment implements \Stringable
     {
         $val = $this->env->get($name);
         if (null === $val) {
-            return $val;
+            return null;
         }
         return (string) $val;
     }

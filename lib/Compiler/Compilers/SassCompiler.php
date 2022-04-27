@@ -37,52 +37,53 @@ final class SassCompiler implements CompilerInterface
             return false;
         }
 
-        return $this->compilerSupport->supports($options, $template);
+        if (!$this->compilerSupport->supports($options, $template)) {
+            return false;
+        }
+
+        if (null !== $template) {
+            return file_exists($this->getTemplatePath($options->getInDirectory(), $template));
+        }
+
+        return true;
     }
 
     public function compile(CompilerOptions $options): void
     {
-        $this->validate($options);
+        if (!$this->supports($options, null)) {
+            throw new CompilerException(self::class, "Unsupported instruction; " . $options->getInDirectory());
+        }
 
         $this->sassCompiler->getApi()->compile($options->getInDirectory(), $options->getOutDirectory());
     }
 
     public function compileTemplate(CompilerOptions $options, string $template): void
     {
-        $in = $this->validateTemplate($options, $template);
+        if (!$this->supports($options, $template)) {
+            throw new TemplateNotFoundException($template, $options, self::class);
+        }
 
         $this->sassCompiler->getApi()->compile(
-            $in,
-            $options->getOutDirectory() . '/' . $template
+            $this->getTemplatePath($options->getInDirectory(), $template),
+            $this->getTemplatePath($options->getOutDirectory(), $template),
         );
     }
 
     public function renderTemplate(CompilerOptions $options, string $template): CompileResult
     {
-        $in = $this->validateTemplate($options, $template);
+        if (!$this->supports($options, $template)) {
+            throw new TemplateNotFoundException($template, $options, self::class);
+        }
 
         return new CompileResult(CompileType::Css, $this->sassCompiler->getApi()->compile(
-            $in,
-            $options->getOutDirectory() . '/' . $template,
+            $this->getTemplatePath($options->getInDirectory(), $template),
+            $this->getTemplatePath($options->getOutDirectory(), $template),
         )->getCss());
     }
 
-    private function validate(CompilerOptions $options): void
+    private function getTemplatePath(string $path, string $template): string
     {
-        if (!is_dir($options->getInDirectory())) {
-            throw new CompilerException($this::class, "Directory in does not exist ({$options->getInDirectory()})");
-        }
-    }
-
-    private function validateTemplate(CompilerOptions $options, string $template): string
-    {
-        $this->validate($options);
-        $in = $options->getInDirectory() . '/' . $template;
-
-        if (!file_exists($in)) {
-            throw new TemplateNotFoundException($template, $options, $this::class);
-        }
-
-        return $in;
+        $this->getLogger()->error("PATH=$path");
+        return $path . '/' . $template;
     }
 }

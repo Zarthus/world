@@ -101,6 +101,8 @@ final class RunMultipleCommand implements CommandInterface
      */
     private function validateCommands(array $cmds): array
     {
+        \assert(!is_null($this->application));
+
         /** @var Command[] $commands */
         $commands = [];
         // Validate

@@ -16,6 +16,10 @@
             <directory>tests/Unit/lib</directory>
             <directory>tests/Unit/src</directory>
         </testsuite>
+        <testsuite name="system">
+            <directory>tests/System/lib</directory>
+            <!--<directory>tests/System/src</directory>-->
+        </testsuite>
     </testsuites>
 
     <coverage>

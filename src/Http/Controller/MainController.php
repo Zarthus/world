@@ -47,7 +47,7 @@ final class MainController
             throw new HttpException($e->getMessage(), HttpStatusCode::InternalServerError->value, $e);
         }
 
-        return new Response(HttpStatusCode::Ok->value, $this->headers($compiled->getMimeType()), $compiled);
+        return new Response(HttpStatusCode::Ok->value, $this->headers($compiled->getMimeType()), (string) $compiled);
     }
 
     /** @psalm-param int|HttpStatusCode $code */
@@ -68,7 +68,7 @@ final class MainController
             $compiled = $this->compiler->renderTemplate($this->compilerOptions, "errors/500");
         }
 
-        return new Response($code, $this->headers($compiled->getMimeType()), $compiled);
+        return new Response($code, $this->headers($compiled->getMimeType()), (string) $compiled);
     }
 
     /**

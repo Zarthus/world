@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Zarthus\World\Compiler\Compilers;
 
+use Zarthus\World\App\App;
 use Zarthus\World\App\LogAwareTrait;
 use Zarthus\World\Compiler\CompileResult;
 use Zarthus\World\Compiler\CompilerInterface;

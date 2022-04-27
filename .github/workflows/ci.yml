@@ -9,27 +9,36 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v3
-            - name: Install dependencies
+            - name: Install composer dependencies
               uses: php-actions/composer@v6
               with:
                   php_version: "8.1"
+                  php_extensions: intl
                   command: 'install'
+            - name: Post composer-install
+              run: |
+                  composer run post-install-cmd
             - name: Download sass
               run: |
                   npm install -g sass
             - name: Run psalm
               run: |
-                  composer lint:psalm
+                  composer run lint:psalm
               continue-on-error: true
             - name: Run code-style
               run: |
-                  composer lint:cs
+                  composer run lint:cs
+              continue-on-error: true
             - name: Run Unit Tests
               run: |
-                  composer test:unit
-            - name: Validate composer.json
+                  composer run test:unit
+            - name: Run System Tests
               run: |
-                  composer clean
+                  composer run test:system
+            - name: Clean assets
+              continue-on-error: true
+              run: |
+                  composer run clean
             - name: Validate composer.json
               run: |
                   composer validate

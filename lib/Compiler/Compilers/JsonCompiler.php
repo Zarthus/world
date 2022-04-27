@@ -16,6 +16,7 @@ use Zarthus\World\Container\Container;
 use Zarthus\World\Environment\Environment;
 use Zarthus\World\Exception\TemplateIllegalException;
 use Zarthus\World\Exception\TemplateNotFoundException;
+
 final class JsonCompiler implements CompilerInterface
 {
     use LogAwareTrait;

@@ -47,7 +47,7 @@ final class TwigCompiler implements CompilerInterface
             return false;
         }
 
-        if ($template === null) {
+        if (null === $template) {
             // Partial support is offered: We compile .json.twig files in `/api`,
             // Which means it only applies to cases where $template is non-null.
             if (str_contains($options->getInDirectory(), 'api')) {
@@ -74,7 +74,7 @@ final class TwigCompiler implements CompilerInterface
 
         foreach ($finder as $fileInfo) {
             if ($fileInfo->isDir()) {
-                $this->getLogger()->info("Directory: {$fileInfo->getFilename()}");
+                $this->getLogger()->debug("Compiling Directory: {$fileInfo->getFilename()}");
                 continue;
             }
 
@@ -199,7 +199,6 @@ final class TwigCompiler implements CompilerInterface
         string $template,
         ?string $appendExtension = null
     ): string {
-
         if (null === $appendExtension) {
             // there is already an extension (e.g. .json.twig, .html.twig)
             if (preg_match('@\.[a-z\d]+$@', str_replace('.twig', '', $template))) {

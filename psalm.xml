@@ -12,8 +12,9 @@
 
         <!--
             todo: psalm phpunit plugin is not properly functioning
-            <directory name="tests/lib"/>
+            <directory name="tests/Framework"/>
             <directory name="tests/Unit"/>
+            <directory name="tests/System"/>
         -->
     </projectFiles>
 

@@ -32,7 +32,7 @@ class CompilerException extends AppException
 
     protected function formatCompilerClassString(?string $compiler): ?string
     {
-        if ($compiler === null) {
+        if (null === $compiler) {
             return null;
         }
 

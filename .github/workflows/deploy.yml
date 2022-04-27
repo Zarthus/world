@@ -17,13 +17,15 @@ jobs:
               uses: php-actions/composer@v6
               with:
                   php_version: "8.1"
+                  php_extensions: intl
                   command: 'install'
             - name: Download sass
               run: |
                   npm install -g sass
             - name: Build
               run: |
-                  composer publish:pages
+                  composer run post-install-cmd
+                  composer run publish:pages
             - name: Deploy
               uses: JamesIves/github-pages-deploy-action@v4.2.5
               with:

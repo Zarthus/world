@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Zarthus\World\Container\DotEnv;
@@ -30,7 +31,7 @@ final class DotEnv
     {
         $root = Path::root();
 
-        $file = sprintf('.env%s', $environment !== null ? ('.' . ((string)$environment->get(EnvVar::Name))) : '');
+        $file = sprintf('.env%s', null !== $environment ? ('.' . ((string)$environment->get(EnvVar::Name))) : '');
         $path = $root . '/' . $file;
 
         return self::parse($path);

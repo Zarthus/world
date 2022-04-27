@@ -17,13 +17,13 @@ final class Path
     }
 
     // The development resources dir (raw, uncompiled templates and scripts).
-    public static function private(): string
+    private static function private(): string
     {
         return self::root() . '/private';
     }
 
     // The production resources dir (compiled css, js, templates, ..)
-    public static function public(): string
+    private static function public(): string
     {
         return self::root() . '/public';
     }

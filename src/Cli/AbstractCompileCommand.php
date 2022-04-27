@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Zarthus\World\App\Cli;
@@ -29,11 +30,12 @@ abstract class AbstractCompileCommand implements CommandInterface
      */
     protected function validate(InputInterface $input): array
     {
-        if (!file_exists($inDir = (string) $input->getArgument('directory-in'))) {
-            throw new CompilerException($this->getCompiler()::class, 'Directory (input) does not exist.');
-        }
-        if (!file_exists($outDir = (string) $input->getArgument('directory-out'))) {
-            throw new CompilerException($this->getCompiler()::class, 'Directory (output) does not exist.');
+        $inDir = (string) $input->getArgument('directory-in');
+        $outDir = (string) $input->getArgument('directory-out');
+
+
+        if (!file_exists($inDir)) {
+            throw new CompilerException($this->getCompiler()::class, 'Directory (input) does not exist: ' . $inDir);
         }
 
         return ['in' => $inDir, 'out' => $outDir];

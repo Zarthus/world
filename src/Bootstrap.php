@@ -25,7 +25,7 @@ final class Bootstrap
         }
 
         $env = App::getEnvironment();
-        App::getLogger()->info(sprintf(
+        App::getLogger()->debug(sprintf(
             'Initialized environment: %s (%s)',
             $env->getString(EnvVar::Name),
             $env->getBool(EnvVar::Development) ? 'dev' : 'live',

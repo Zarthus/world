@@ -8,7 +8,6 @@ use League\Container\Argument\Literal\ObjectArgument;
 use Zarthus\World\Container\DotEnv\DotEnv;
 use Zarthus\World\Environment\Environment;
 use Zarthus\World\Environment\EnvironmentInterface;
-use Zarthus\World\Environment\EnvVar;
 
 final class EnvironmentServiceProvider extends AbstractServiceProvider
 {
@@ -19,7 +18,10 @@ final class EnvironmentServiceProvider extends AbstractServiceProvider
 
     public function register(): void
     {
-        DotEnv::fromEnvironment(null);
+        if (empty(getenv('LIEFLAND_ENVIRONMENT'))) {
+            DotEnv::fromEnvironment(null);
+        }
+
         $environment = $this->createEnvironment();
         if (DotEnv::fromEnvironment($environment)) {
             // if env was modified, reload it.

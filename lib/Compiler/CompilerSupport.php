@@ -25,7 +25,7 @@ final class CompilerSupport
             return false;
         }
 
-        if ($template !== null) {
+        if (null !== $template) {
             foreach ($this->extensions as $extension) {
                 $normalizedExtension = '.' . trim($extension, '.');
 
@@ -57,7 +57,7 @@ final class CompilerSupport
             return false;
         }
 
-        if ($this->prohibitDirectoryTraversalBack && $template !== null && str_contains($template, '..')) {
+        if ($this->prohibitDirectoryTraversalBack && null !== $template && str_contains($template, '..')) {
             return false;
         }
 

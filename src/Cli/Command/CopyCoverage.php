@@ -78,7 +78,7 @@ final class CopyCoverage implements CommandInterface
         $inDir = Path::tests() . '/coverage/html';
         $outDir = Path::www(false) . '/coverage';
 
-        $command->setDescription('Copy non-compiled sources');
+        $command->setDescription('Copy coverage files from testsuite');
         $command->addArgument('directory-in', InputArgument::OPTIONAL, 'The template directory', $inDir);
         $command->addArgument('directory-out', InputArgument::OPTIONAL, 'The output directory', $outDir);
         $command->addOption('allow-failure', null, InputOption::VALUE_NONE, 'Allows failure of the command');

@@ -21,9 +21,19 @@ use Zarthus\World\Exception\CompilerException;
 
 final class CompileCommand extends AbstractCompileCommand
 {
+    private const COMPILER_OUT_REPLACEMENTS = [
+        ['scss', 'sass', 'html'],
+        ['css',  'css',  ''],
+    ];
+
     public function __construct(
         private readonly GroupCompiler $compiler,
     ) {
+    }
+
+    public function getName(): string
+    {
+        return 'compile:all';
     }
 
     public function execute(InputInterface $input, OutputInterface $output): CommandResult
@@ -47,7 +57,7 @@ final class CompileCommand extends AbstractCompileCommand
 
             $options = new CompilerOptions(
                 $inDir . '/' . $directory->getRelativePathname(),
-                $outDir . '/' . $directory->getRelativePathname(),
+                $outDir . '/' . str_replace(self::COMPILER_OUT_REPLACEMENTS[0], self::COMPILER_OUT_REPLACEMENTS[1], $directory->getRelativePathname()),
                 false,
             );
             try {
@@ -72,6 +82,7 @@ final class CompileCommand extends AbstractCompileCommand
         $outDir = Path::www(false);
 
         $command->setDescription('Iterate over directories in directory-in with depth of 1 and compile all sources.');
+        $command->setAliases(['compile']);
         $command->addArgument('directory-in', InputArgument::OPTIONAL, 'The root www folder (input)', $inDir);
         $command->addArgument('directory-out', InputArgument::OPTIONAL, 'The root www folder (output)', $outDir);
         $command->addOption('continue-on-error', null, InputOption::VALUE_NONE, 'Continue compilation on error');

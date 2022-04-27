@@ -94,7 +94,7 @@ final class Kernel
                 return;
             }
 
-            Loop::onSignal((int) SIGINT, function (string $watcherId) use ($server) {
+            Loop::onSignal(SIGINT, function (string $watcherId) use ($server) {
                 $this->logger->info('Shutting down.');
                 Loop::cancel($watcherId);
                 yield $server->stop();
