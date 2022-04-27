@@ -20,14 +20,11 @@ use Zarthus\World\Exception\TemplateNotFoundException;
 
 final class MainController
 {
-    private CompilerOptions $compilerOptions;
-
     public function __construct(
         private readonly Environment $environment,
         private readonly CompilerInterface $compiler,
         private readonly Logger $logger,
     ) {
-        $this->compilerOptions = new CompilerOptions(Path::templates(true), Path::templates(false), true);
     }
 
     /**
@@ -39,8 +36,10 @@ final class MainController
             throw new HttpException("Unsupported method {$request->getMethod()} for {$request->getUri()->getPath()}", 405);
         }
 
+        ['options' => $options, 'template' => $template] = $this->createOptions($request);
+
         try {
-            $compiled = $this->compiler->renderTemplate($this->compilerOptions, $request->getUri()->getPath());
+            $compiled = $this->compiler->renderTemplate($options, $template);
         } catch (TemplateNotFoundException $e) {
             throw new HttpException($e->getMessage(), HttpStatusCode::NotFound->value, $e);
         } catch (CompilerException | \Throwable $e) {
@@ -61,11 +60,12 @@ final class MainController
             return $this->renderDebugErrorPage($code, $exception);
         }
 
+        $compilerOptions = new CompilerOptions(Path::www(true) . '/html', Path::www(false) . '/', true);
         try {
-            $compiled = $this->compiler->renderTemplate($this->compilerOptions, "errors/$code");
+            $compiled = $this->compiler->renderTemplate($compilerOptions, "errors/$code");
         } catch (TemplateNotFoundException $e) {
             $this->logger->error("Non-existent error template for HTTP $code, serving 500", ['exception' => $e]);
-            $compiled = $this->compiler->renderTemplate($this->compilerOptions, "errors/500");
+            $compiled = $this->compiler->renderTemplate($compilerOptions, "errors/500");
         }
 
         return new Response($code, $this->headers($compiled->getMimeType()), (string) $compiled);
@@ -87,5 +87,25 @@ final class MainController
         $htmlErrorRenderer = new HtmlErrorRenderer(true);
         $e = $htmlErrorRenderer->render($exception);
         return new Response($code, $e->getHeaders(), $e->getAsString());
+    }
+
+    /** @return array{options: CompilerOptions, template: string} */
+    private function createOptions(Request $request): array
+    {
+        $firstPathElement = strtok($request->getUri()->getPath(), '/');
+        $inDirectory = false === $firstPathElement ? '/html' : $firstPathElement;
+        if (!is_dir(Path::www(true) . "/$inDirectory")) {
+            $inDirectory = '/html';
+            $template = $request->getUri()->getPath();
+        } else {
+            $template = str_replace($inDirectory, '', $request->getUri()->getPath());
+        }
+        $outDirectory = Path::www(false);
+        $template = empty($template) ? $request->getUri()->getPath() : $template;
+
+        return [
+            'options' => new CompilerOptions(Path::www(true) . '/' . $inDirectory, Path::www(false) . '/' . $outDirectory, true),
+            'template' => $template,
+        ];
     }
 }

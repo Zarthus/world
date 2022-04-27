@@ -36,24 +36,26 @@ use function Amp\call;
 final class Kernel
 {
     private \Monolog\Logger $logger;
+    private \Monolog\Logger $httpLogger;
 
     public function __construct(
         private readonly MainController $controller,
         private readonly Environment $environment,
     ) {
-        $this->setUp();
-    }
-
-    private function setUp(): void
-    {
         $this->logger = clone App::getLogger('Kernel');
         $this->logger->pushHandler(
             new RotatingFileHandler(Path::tmp() . '/log/http.log', 2, $this->environment->get(EnvVar::LogLevel)),
         );
+        $this->httpLogger = new \Monolog\Logger('HTTP', [
+            new RotatingFileHandler(Path::tmp() . '/log/requests.log', 1, $this->environment->get(EnvVar::LogLevel)),
+        ]);
+        $this->httpLogger->useMicrosecondTimestamps(false);
     }
 
     public function start(): void
     {
+        ini_set('max_execution_time', '0');
+
         Loop::run(function () {
             $listeners = array_map(
                 static fn (string $listener) => Uri::createFromString($listener),
@@ -80,13 +82,18 @@ final class Kernel
             $server = new HttpServer(
                 $sockets,
                 new CallableRequestHandler(function (Request $request) {
-                    App::getLogger('Webserver')->info('REQUEST: ' . $request->getUri());
+                    $this->httpLogger->info($request->getMethod() . ' request from  [' . $request->getClient()->getRemoteAddress()->toString() . ']: ' . $request->getUri()->getPath());
 
-                    return yield $this->handleRequest($request);
+                    /** @var Response $response */
+                    $response = yield $this->handleRequest($request);
+                    $this->httpLogger->info($response->getStatus() . ' response to  [' . $request->getClient()->getRemoteAddress()->toString() . ']: ' . $request->getUri()->getPath());
+
+                    return $response;
                 }),
                 $this->logger,
             );
 
+            $this->httpLogger->info('Starting up..');
             yield $server->start();
 
             if (!defined('SIGINT')) {
@@ -96,6 +103,7 @@ final class Kernel
 
             Loop::onSignal(SIGINT, function (string $watcherId) use ($server) {
                 $this->logger->info('Shutting down.');
+                $this->httpLogger->info('Shutting down.');
                 Loop::cancel($watcherId);
                 yield $server->stop();
             });

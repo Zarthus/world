@@ -101,17 +101,17 @@ final class TwigCompiler implements CompilerInterface
 
     public function renderTemplate(CompilerOptions $options, string $template): CompileResult
     {
+        $template = $this->normalizeTemplate($template, $options->getInDirectory());
         if (!$this->compilerSupport->supports($options, $template)) {
             throw new TemplateIllegalException($template, $this::class);
         }
 
         $engine = $this->createEngine($options);
-        $template = $this->normalizeTemplate($template, $options->getInDirectory());
 
         return new CompileResult(
             CompileType::Twig,
             $this->compileFile($engine, $options, $template),
-            mime_content_type($options->getOutDirectory() . '/' . $template),
+            $this->resolveMimeType($template, $options),
         );
     }
 
@@ -214,7 +214,7 @@ final class TwigCompiler implements CompilerInterface
 
     private function normalizeTemplate(string $template, string $path): string
     {
-        if (str_ends_with($template, '/')) {
+        if ('/' === $template || str_ends_with($template, '/')) {
             $template .= 'index';
         }
         if (str_starts_with($template, '/')) {
@@ -238,5 +238,26 @@ final class TwigCompiler implements CompilerInterface
             throw new CompilerException($this::class, 'Cannot create directory: ' . $dir);
         }
         file_put_contents($fullPath, $contents);
+    }
+
+    private function resolveMimeType(string $template, CompilerOptions $options): ?string
+    {
+        if (str_ends_with($options->getInDirectory(), '/html')) {
+            $mimeType = 'text/html';
+        } else {
+            $mimeType = null;
+            $tryMimeTypes = [
+                $options->getOutDirectory() . '/' . $template,
+                $options->getInDirectory() . '/' . $template,
+            ];
+            foreach ($tryMimeTypes as $path) {
+                if (file_exists($path)) {
+                    $mimeType = mime_content_type($path);
+                    $this->getLogger()->debug("Determined MimeType of $path to be $mimeType");
+                }
+            }
+        }
+
+        return empty($mimeType) ? null : $mimeType;
     }
 }
