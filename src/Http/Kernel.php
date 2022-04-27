@@ -82,11 +82,11 @@ final class Kernel
             $server = new HttpServer(
                 $sockets,
                 new CallableRequestHandler(function (Request $request) {
-                    $this->httpLogger->info($request->getMethod() . ' request from  [' . $request->getClient()->getRemoteAddress()->toString() . ']: ' . $request->getUri()->getPath());
+                    $this->httpLogger->info($request->getMethod() . ' request from [' . $request->getClient()->getRemoteAddress()->toString() . ']: ' . $request->getUri()->getPath());
 
                     /** @var Response $response */
                     $response = yield $this->handleRequest($request);
-                    $this->httpLogger->info($response->getStatus() . ' response to  [' . $request->getClient()->getRemoteAddress()->toString() . ']: ' . $request->getUri()->getPath());
+                    $this->httpLogger->info($response->getStatus() . ' response to   [' . $request->getClient()->getRemoteAddress()->toString() . ']: ' . $request->getUri()->getPath());
 
                     return $response;
                 }),

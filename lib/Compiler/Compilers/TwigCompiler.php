@@ -101,6 +101,19 @@ final class TwigCompiler implements CompilerInterface
 
     public function renderTemplate(CompilerOptions $options, string $template): CompileResult
     {
+        if ($options->isLiveCompilation()) {
+            // Handle requests to the HTML dir that aren't HTML files, e.g. favicon.ico
+            $tryPath = $options->getOutDirectory() . '/' . $template;
+            if (!str_ends_with($template, '.twig') && !str_ends_with($template, '.html') &&
+                !is_dir($tryPath) && file_exists($tryPath)) {
+                return new CompileResult(
+                    CompileType::Twig,
+                    file_get_contents($tryPath),
+                    $this->resolveMimeType($template, $options)
+                );
+            }
+        }
+
         $template = $this->normalizeTemplate($template, $options->getInDirectory());
         if (!$this->compilerSupport->supports($options, $template)) {
             throw new TemplateIllegalException($template, $this::class);
@@ -171,6 +184,7 @@ final class TwigCompiler implements CompilerInterface
         $twig->addGlobal('appVersion', App::version());
         $twig->addGlobal('environment', $this->environment->getString(EnvVar::Name));
         $twig->addGlobal('development', $this->environment->getBool(EnvVar::Development));
+        $twig->addGlobal('basedir', $this->environment->getString(EnvVar::HttpBaseDir));
         $twig->addGlobal('language', 'en');
 
         /** @var CoreExtension $core */

@@ -93,9 +93,9 @@ final class MainController
     private function createOptions(Request $request): array
     {
         $firstPathElement = strtok($request->getUri()->getPath(), '/');
-        $inDirectory = false === $firstPathElement ? '/html' : $firstPathElement;
+        $inDirectory = false === $firstPathElement ? 'html' : $firstPathElement;
         if (!is_dir(Path::www(true) . "/$inDirectory")) {
-            $inDirectory = '/html';
+            $inDirectory = 'html';
             $template = $request->getUri()->getPath();
         } else {
             $template = str_replace($inDirectory, '', $request->getUri()->getPath());
@@ -104,7 +104,11 @@ final class MainController
         $template = empty($template) ? $request->getUri()->getPath() : $template;
 
         return [
-            'options' => new CompilerOptions(Path::www(true) . '/' . $inDirectory, Path::www(false) . '/' . $outDirectory, true),
+            'options' => new CompilerOptions(
+                Path::www(true) . '/' . $inDirectory,
+                $outDirectory,
+                true,
+            ),
             'template' => $template,
         ];
     }

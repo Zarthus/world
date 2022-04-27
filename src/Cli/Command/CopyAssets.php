@@ -53,6 +53,10 @@ final class CopyAssets implements CommandInterface
                 options: ['override' => true, 'copy_on_windows' => true, 'delete' => true]
             );
         }
+        foreach (Finder::create()->in($inDir . '/assets/favicon')->files() as $favicon) {
+            $this->fs->copy($favicon->getPathname(), $outDir . '/' . $favicon->getFilename());
+            $this->fs->remove($outDir . '/assets/favicon/' . $favicon->getFilename());
+        }
 
         $style->success("Copied sources into $outDir");
         return CommandResult::Ok;
