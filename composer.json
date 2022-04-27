@@ -94,7 +94,8 @@
         ],
 
         "post-root-package-install": [
-            "@php -r \"file_exists('.env') || copy('.env.dist', '.env');\""
+            "@php -r \"file_exists('.env') || copy('.env.dist', '.env');\"",
+            "@php -r \"file_exists('.php-cs-fixer') || copy('.php-cs-fixer.dist', '.php-cs-fixer');\""
         ]
     },
     "config": {

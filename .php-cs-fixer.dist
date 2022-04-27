@@ -1,0 +1,26 @@
+#!/usr/bin/env php
+<?php
+
+use Zarthus\World\App\Path;
+
+require 'vendor/autoload.php';
+$config = new PhpCsFixer\Config();
+
+return $config
+    ->setFinder(
+        PhpCsFixer\Finder::create()
+            ->in(Path::app())
+            ->in(Path::lib())
+            ->in(Path::tests())
+    )
+    ->setRiskyAllowed(true)
+    ->setRules([
+        '@PSR12' => true,
+        'no_useless_else' => true,
+        'trailing_comma_in_multiline' => true,
+        'yoda_style' => true,
+        'strict_param' => true,
+        'array_syntax' => ['syntax' => 'short'],
+    ])
+    ->setCacheFile(Path::tmp() . '/php-cs-fixer.cache')
+;
