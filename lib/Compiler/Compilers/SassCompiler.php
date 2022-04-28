@@ -18,6 +18,7 @@ use Zarthus\World\Environment\Environment;
 use Zarthus\World\Environment\EnvVar;
 use Zarthus\World\Exception\CompilerException;
 use Zarthus\World\Exception\TemplateNotFoundException;
+use Zarthus\World\File\MimeTypeResolver;
 
 final class SassCompiler implements CompilerInterface
 {
@@ -29,8 +30,9 @@ final class SassCompiler implements CompilerInterface
         private readonly Container $container,
         private readonly Environment $environment,
         private readonly Sass $sassCompiler,
+        private readonly MimeTypeResolver $mimeTypeResolver,
     ) {
-        $this->compilerSupport = new CompilerSupport(['css', 'scss', 'sass'], ['scss', 'sass']);
+        $this->compilerSupport = new CompilerSupport(['css', 'scss', 'sass'], ['scss', 'sass', 'css', 'map']);
     }
 
     public function supports(CompilerOptions $options, ?string $template): bool
@@ -39,15 +41,7 @@ final class SassCompiler implements CompilerInterface
             return false;
         }
 
-        if (!$this->compilerSupport->supports($options, $template)) {
-            return false;
-        }
-
-        if (null !== $template) {
-            return file_exists($this->getTemplatePath($options->getInDirectory(), $template));
-        }
-
-        return true;
+        return $this->compilerSupport->supports($options, $template);
     }
 
     public function compile(CompilerOptions $options): void
@@ -65,11 +59,7 @@ final class SassCompiler implements CompilerInterface
             throw new TemplateNotFoundException($template, $options, self::class);
         }
 
-        $this->sassCompiler->getApi()->compile(
-            $this->getTemplatePath($options->getInDirectory(), $template),
-            $this->getTemplatePath($options->getOutDirectory(), $template),
-            $this->createCliOptions(),
-        );
+        $this->renderTemplate($options, $template);
     }
 
     public function renderTemplate(CompilerOptions $options, string $template): CompileResult
@@ -78,11 +68,14 @@ final class SassCompiler implements CompilerInterface
             throw new TemplateNotFoundException($template, $options, self::class);
         }
 
-        return new CompileResult(CompileType::Css, $this->sassCompiler->getApi()->compile(
-            $this->getTemplatePath($options->getInDirectory(), $template),
-            $this->getTemplatePath($options->getOutDirectory(), $template),
-            $this->createCliOptions(),
-        )->getCss());
+        $this->compile($options);
+        $path = $this->getTemplatePath($options->getOutDirectory(), $template);
+
+        return new CompileResult(
+            CompileType::Css,
+            file_get_contents($path),
+            $this->mimeTypeResolver->resolve($path),
+        );
     }
 
     private function getTemplatePath(string $path, string $template): string

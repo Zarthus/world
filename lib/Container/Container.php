@@ -13,6 +13,7 @@ use Zarthus\World\Container\ServiceProvider\CompilerServiceProvider;
 use Zarthus\World\Container\ServiceProvider\EnvironmentServiceProvider;
 use Zarthus\World\Container\ServiceProvider\FilePathProvider;
 use Zarthus\World\Container\ServiceProvider\LoggerServiceProvider;
+use Zarthus\World\Container\ServiceProvider\MimeTypeResolverProvider;
 use Zarthus\World\Container\ServiceProvider\SassServiceProvider;
 use Zarthus\World\Environment\Environment;
 use Zarthus\World\Environment\EnvVar;
@@ -84,6 +85,7 @@ final class Container implements ContainerInterface
         $container->delegate(new ReflectionContainer(!$environment->getBool(EnvVar::Development)));
 
         // Add extra service providers
+        $container->addServiceProvider(new MimeTypeResolverProvider());
         $container->addServiceProvider(new SassServiceProvider());
         $container->addServiceProvider(new CompilerServiceProvider());
 

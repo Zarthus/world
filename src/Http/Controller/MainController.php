@@ -127,6 +127,13 @@ final class MainController
         }
         $template = empty($template) ? '/' : $template;
 
+        $secondPathElement = strtok($template, '/');
+        if (false !== $secondPathElement && is_dir(Path::www(false) . "/$secondPathElement")) {
+            $inDirectory = str_replace('css', 'scss', $secondPathElement);
+            $outDirectory = Path::www(false) . "/$secondPathElement";
+            $template = str_replace($secondPathElement . '/', '', $template);
+        }
+
         return [
             'options' => new CompilerOptions(
                 Path::www(true) . '/' . $inDirectory,

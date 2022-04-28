@@ -14,6 +14,7 @@ use Zarthus\World\Container\Container;
 use Zarthus\World\Environment\Environment;
 use Zarthus\World\Exception\TemplateIllegalException;
 use Zarthus\World\Exception\TemplateNotFoundException;
+use Zarthus\World\File\MimeTypeResolver;
 
 /**
  * The major difference between this and {@see NoneCompiler} is that this one knows specifically
@@ -30,8 +31,9 @@ final class AssetCompiler implements CompilerInterface
     public function __construct(
         private readonly Container $container,
         private readonly Environment $environment,
+        private readonly MimeTypeResolver $mimeTypeResolver,
     ) {
-        $this->compilerSupport = new CompilerSupport([''], ['png', 'jpg', 'ico', 'map', 'woff', 'woff2']);
+        $this->compilerSupport = new CompilerSupport([], ['png', 'jpg', 'ico', 'woff', 'woff2']);
     }
 
     public function supports(CompilerOptions $options, ?string $template): bool
@@ -68,7 +70,7 @@ final class AssetCompiler implements CompilerInterface
         return new CompileResult(
             CompileType::Asset,
             file_get_contents($asset),
-            mime_content_type($asset),
+            $this->mimeTypeResolver->resolve($asset),
         );
     }
 }

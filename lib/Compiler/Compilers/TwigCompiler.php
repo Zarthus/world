@@ -27,6 +27,7 @@ use Zarthus\World\Environment\EnvVar;
 use Zarthus\World\Exception\CompilerException;
 use Zarthus\World\Exception\TemplateIllegalException;
 use Zarthus\World\Exception\TemplateNotFoundException;
+use Zarthus\World\File\MimeTypeResolver;
 
 final class TwigCompiler implements CompilerInterface
 {
@@ -37,6 +38,7 @@ final class TwigCompiler implements CompilerInterface
     public function __construct(
         private readonly Container $container,
         private readonly Environment $environment,
+        private readonly MimeTypeResolver $mimeTypeResolver,
     ) {
         $this->compilerSupport = new CompilerSupport(['api', 'html'], ['twig']);
     }
@@ -136,7 +138,7 @@ final class TwigCompiler implements CompilerInterface
         } catch (TwigError $e) {
             $this->getLogger()->critical(implode("\n", [
                 "Compilation of $template failed due to a compiler error: ",
-                $e->getMessage() . ' - ' . $e->getSourceContext()?->getName(),
+                $e->getMessage() . ' - ' . ($e->getSourceContext()?->getName() ?? '(sourcecontext)'),
             ]), ['exception' => $e]);
             throw new CompilerException($this::class, $e->getMessage(), previous: $e);
         } catch (\Exception $e) {
@@ -165,7 +167,7 @@ final class TwigCompiler implements CompilerInterface
             'strict_variables' => true,
             'optimizations' => $this->environment->getBool(EnvVar::Development) ? 0 : -1,
             'autoescape' => 'html',
-            'auto_reload ' => $this->environment->getBool(EnvVar::Development) || $options->isLiveCompilation(),
+            'auto_reload' => $this->environment->getBool(EnvVar::Development) || $options->isLiveCompilation(),
         ]);
 
         // Assigns global variables to all templates.
@@ -189,7 +191,11 @@ final class TwigCompiler implements CompilerInterface
         }
 
         /** @var array<string, callable> $functions */
-        $functions = [];
+        $functions = [
+            'asset' => fn (string $asset) => $this->environment->getString(EnvVar::HttpBaseDir) . $asset,
+            'path' => fn (string $path) => $this->environment->getString(EnvVar::HttpBaseDir) . $path,
+            'url' => fn (string $url) => $this->environment->getString(EnvVar::HttpBaseDir) . $url,
+        ];
         foreach ($functions as $name => $fn) {
             $twig->addFunction(new TwigFunction($name, $fn));
         }
@@ -258,7 +264,7 @@ final class TwigCompiler implements CompilerInterface
             ];
             foreach ($tryMimeTypes as $path) {
                 if (file_exists($path)) {
-                    $mimeType = mime_content_type($path);
+                    $mimeType = $this->mimeTypeResolver->resolve($path);
                     $relativePath = str_replace(Path::root(), '', $path);
                     $this->getLogger()->debug("Determined MimeType of $template to be $mimeType ($relativePath)");
                     break;

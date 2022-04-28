@@ -55,7 +55,7 @@ final class EnvironmentTest extends TestCase
     {
         return match ($var) {
             EnvVar::Name, EnvVar::LogLevel => 'string',
-            EnvVar::Development, EnvVar::Compress, EnvVar::Sass => 'bool',
+            EnvVar::LogToStdout, EnvVar::Development, EnvVar::Compress, EnvVar::Sass => 'bool',
             EnvVar::HttpListeners => 'array',
             EnvVar::HttpBaseDir, EnvVar::HttpCertificatePath => '?string',
             default => $this->fail('Did not resolve env: ' . $var->name),

@@ -16,6 +16,7 @@ use Zarthus\World\Container\Container;
 use Zarthus\World\Environment\Environment;
 use Zarthus\World\Exception\CompilerException;
 use Zarthus\World\Exception\TemplateNotFoundException;
+use Zarthus\World\File\MimeTypeResolver;
 
 final class MarkdownCompiler implements CompilerInterface
 {
@@ -26,6 +27,7 @@ final class MarkdownCompiler implements CompilerInterface
     public function __construct(
         private readonly Container $container,
         private readonly Environment $environment,
+        private readonly MimeTypeResolver $mimeTypeResolver,
     ) {
         $this->compilerSupport = new CompilerSupport(['articles'], ['md']);
     }
@@ -73,7 +75,7 @@ final class MarkdownCompiler implements CompilerInterface
         return new CompileResult(
             CompileType::Twig,
             $engine->convert($input)->getContent(),
-            mime_content_type($in),
+            $this->mimeTypeResolver->resolve($in),
         );
     }
 

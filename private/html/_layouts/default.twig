@@ -4,9 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{{ appName }} | {{ appTitle | default('A Fantasy World ')}}</title>
-    <meta name="description" content="A simple HTML5 Template for new projects.">
-    <meta name="author" content="SitePoint">
+    <title>{{ appName }} | {{ appTitle | default('A Fantasy World')}}</title>
+    <meta name="description" content="{{ appName }} | A Fantasy World">
+    <meta name="author" content="Zarthus">
 
     <meta property="og:title" content="{{ appName }}">
     <meta property="og:description" content="The Fantasy World of {{ appName }}">
@@ -15,7 +15,7 @@
 
     {% include "_partials/favicon.twig" %}
 
-    <link rel="stylesheet" href="https://unpkg.com/chota@latest">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/dark.css') }}">
     {% block stylesheets %}{% endblock %}
 </head>
 <body>

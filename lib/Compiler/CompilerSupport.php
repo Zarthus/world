@@ -52,7 +52,6 @@ final class CompilerSupport
     {
         $in = $options->getInDirectory();
 
-
         if (!is_dir($in)) {
             return false;
         }

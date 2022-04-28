@@ -17,5 +17,6 @@ final class FilePathProvider extends AbstractServiceProvider
     {
         $root = dirname(__DIR__, 3);
         $this->container->add('paths.root', new StringArgument($root));
+        chdir($root);
     }
 }
