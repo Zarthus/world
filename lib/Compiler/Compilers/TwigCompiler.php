@@ -47,7 +47,7 @@ final class TwigCompiler implements CompilerInterface
     {
         if (!$this->compilerSupport->supports($options, $template)) {
             // Emulate `/` mapping to `/index.html`
-            if (str_ends_with($template, '/') && $options->isLiveCompilation()) {
+            if (null !== $template && str_ends_with($template, '/') && $options->isLiveCompilation()) {
                 return true;
             }
 
@@ -192,9 +192,9 @@ final class TwigCompiler implements CompilerInterface
 
         /** @var array<string, callable> $functions */
         $functions = [
-            'asset' => fn (string $asset) => $this->environment->getString(EnvVar::HttpBaseDir) . $asset,
-            'path' => fn (string $path) => $this->environment->getString(EnvVar::HttpBaseDir) . $path,
-            'url' => fn (string $url) => $this->environment->getString(EnvVar::HttpBaseDir) . $url,
+            'asset' => fn (string $asset): string => $this->environment->getString(EnvVar::HttpBaseDir) . $asset,
+            'path' => fn (string $path): string => $this->environment->getString(EnvVar::HttpBaseDir) . $path,
+            'url' => fn (string $url): string => $this->environment->getString(EnvVar::HttpBaseDir) . $url,
         ];
         foreach ($functions as $name => $fn) {
             $twig->addFunction(new TwigFunction($name, $fn));

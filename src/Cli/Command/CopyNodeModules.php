@@ -25,13 +25,12 @@ use Zarthus\World\Exception\FileNotFoundException;
  */
 final class CopyNodeModules implements CommandInterface
 {
+    use ResolvableNameTrait;
+    use LogAwareTrait;
     private const FILES = [
         'bootstrap-icons/font/fonts/bootstrap-icons.woff' => 'assets/fonts/bootstrap-icons.woff',
         'bootstrap-icons/font/fonts/bootstrap-icons.woff2' => 'assets/fonts/bootstrap-icons.woff2',
     ];
-
-    use ResolvableNameTrait;
-    use LogAwareTrait;
 
     public function __construct(
         private readonly Filesystem $fs,
