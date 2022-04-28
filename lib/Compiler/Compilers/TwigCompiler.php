@@ -44,6 +44,11 @@ final class TwigCompiler implements CompilerInterface
     public function supports(CompilerOptions $options, ?string $template): bool
     {
         if (!$this->compilerSupport->supports($options, $template)) {
+            // Emulate `/` mapping to `/index.html`
+            if (str_ends_with($template, '/') && $options->isLiveCompilation()) {
+                return true;
+            }
+
             return false;
         }
 

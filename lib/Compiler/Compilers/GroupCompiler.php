@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Zarthus\World\Compiler\Compilers;
 
-use Zarthus\World\App\App;
 use Zarthus\World\App\LogAwareTrait;
 use Zarthus\World\Compiler\CompileResult;
 use Zarthus\World\Compiler\CompilerInterface;
@@ -59,12 +58,12 @@ final class GroupCompiler implements CompilerInterface
 
     public function compileTemplate(CompilerOptions $options, string $template): void
     {
-        $this->getCompiler($options, null)->compileTemplate($options, $template);
+        $this->getCompiler($options, $template)->compileTemplate($options, $template);
     }
 
     public function renderTemplate(CompilerOptions $options, string $template): CompileResult
     {
-        return $this->getCompiler($options, null)->renderTemplate($options, $template);
+        return $this->getCompiler($options, $template)->renderTemplate($options, $template);
     }
 
     /**

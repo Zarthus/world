@@ -28,6 +28,7 @@ final class NoneCompiler implements CompilerInterface
     {
         return null !== $template
             && !str_contains($template, '..')
+            && !is_dir($options->getOutDirectory() . '/' . $template)
             && file_exists($options->getOutDirectory() . '/' . $template);
     }
 

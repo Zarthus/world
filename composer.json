@@ -1,6 +1,6 @@
 {
     "name": "zarthus/world",
-    "description": "A html website's helper tools",
+    "description": "World Building framework & tools",
     "type": "project",
     "license": "MIT",
     "version": "1.0",
@@ -72,8 +72,9 @@
         "test:unit": "LIEFLAND_ENVIRONMENT=Tests phpunit --testsuite=unit --no-coverage",
         "test:system": "LIEFLAND_ENVIRONMENT=Tests phpunit --testsuite=system --no-coverage",
 
-        "build:async": "@cli multi --async compile copy:assets",
+        "build:async": "@cli multi --async compile copy:assets copy:node-modules",
         "build:coverage": "LIEFLAND_ENVIRONMENT=Tests XDEBUG_MODE=coverage phpunit",
+        "build:copy-node-modules": "@cli copy:node-modules",
 
         "lint:psalm": "psalm --config=psalm.xml",
         "lint:cs": "php-cs-fixer --config=.php-cs-fixer --dry-run fix --diff",

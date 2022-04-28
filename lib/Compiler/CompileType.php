@@ -10,4 +10,5 @@ enum CompileType
     case Css;
     case Json;
     case Twig;
+    case Asset;
 }

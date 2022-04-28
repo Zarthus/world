@@ -6,7 +6,6 @@ namespace Zarthus\World\App\Http\Controller;
 
 use Amp\Http\Server\Request;
 use Amp\Http\Server\Response;
-use Monolog\Logger;
 use Symfony\Component\ErrorHandler\ErrorRenderer\HtmlErrorRenderer;
 use Zarthus\Http\Status\HttpStatusCode;
 use Zarthus\World\App\App;
@@ -48,9 +47,9 @@ final class MainController
         try {
             $compiled = $this->compiler->renderTemplate($options, $template);
         } catch (TemplateNotFoundException $e) {
-            $fallback = $this->fallback($request);
-            if (null !== $fallback) {
-                return $fallback;
+            $tryBackupFile = $options->getOutDirectory() . '/' . $template;
+            if (!str_contains($tryBackupFile, '..') && file_exists($tryBackupFile) && !is_dir($tryBackupFile)) {
+                $this->getLogger()->error("Found a match on public folder, indicative of a bug in compiler pattern matching: " . $tryBackupFile);
             }
 
             throw new HttpException($e->getMessage(), HttpStatusCode::NotFound, $e);
@@ -81,18 +80,6 @@ final class MainController
         }
 
         return $this->respond($code, (string) $compiled, $compiled->getMimeType());
-    }
-
-    private function fallback(Request $request): ?Response
-    {
-        ['options' => $options, 'template' => $template] = $this->createOptions($request);
-
-        $tryBackupFile = $options->getOutDirectory() . '/' . $template;
-        if (!str_contains($tryBackupFile, '..') && file_exists($tryBackupFile)) {
-            $this->getLogger()->warning("Fallback handler recovered 404 to (possibly cached) " . $template);
-            return $this->respond(HttpStatusCode::Ok, file_get_contents($tryBackupFile), mime_content_type($tryBackupFile));
-        }
-        return null;
     }
 
     /**
@@ -133,10 +120,11 @@ final class MainController
         if (!is_dir(Path::www(true) . "/$inDirectory")) {
             $inDirectory = 'html';
             $template = ltrim($request->getUri()->getPath(), '/');
+            $outDirectory = Path::www(false);
         } else {
             $template = ltrim(str_replace($inDirectory, '', $request->getUri()->getPath()), '/');
+            $outDirectory = Path::www(false) . '/' . (false === $firstPathElement ? '' : $firstPathElement);
         }
-        $outDirectory = Path::www(false) . '/' . (false === $firstPathElement ? '' : $firstPathElement);
         $template = empty($template) ? '/' : $template;
 
         return [

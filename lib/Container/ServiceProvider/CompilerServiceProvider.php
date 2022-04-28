@@ -6,6 +6,7 @@ namespace Zarthus\World\Container\ServiceProvider;
 
 use League\Container\Argument\Literal\ObjectArgument;
 use Zarthus\World\Compiler\CompilerInterface;
+use Zarthus\World\Compiler\Compilers\AssetCompiler;
 use Zarthus\World\Compiler\Compilers\GroupCompiler;
 use Zarthus\World\Compiler\Compilers\JsonCompiler;
 use Zarthus\World\Compiler\Compilers\MarkdownCompiler;
@@ -23,6 +24,7 @@ final class CompilerServiceProvider extends AbstractServiceProvider
     public function register(): void
     {
         $object = new ObjectArgument(new GroupCompiler([
+            $this->getContainer()->get(AssetCompiler::class),
             $this->getContainer()->get(SassCompiler::class),
             $this->getContainer()->get(MarkdownCompiler::class),
             $this->getContainer()->get(TwigCompiler::class),

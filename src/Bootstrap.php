@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Zarthus\World\App;
 
+use Zarthus\World\App\Exception\PhpError;
 use Zarthus\World\Container\Container;
 use Zarthus\World\Container\ServiceProvider\AbstractServiceProvider;
 use Zarthus\World\Environment\EnvVar;
@@ -30,5 +31,13 @@ final class Bootstrap
             $env->getString(EnvVar::Name),
             $env->getBool(EnvVar::Development) ? 'dev' : 'live',
         ));
+
+        error_reporting(E_ALL);
+        set_error_handler(self::errorHandler(), E_ALL);
+    }
+
+    private static function errorHandler(): callable
+    {
+        return static fn (int $errno, string $errstr, string $errfile, int $errline) => throw new PhpError($errstr, $errno, $errfile, $errline);
     }
 }
