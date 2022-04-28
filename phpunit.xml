@@ -18,7 +18,7 @@
         </testsuite>
         <testsuite name="system">
             <directory>tests/System/lib</directory>
-            <!--<directory>tests/System/src</directory>-->
+            <directory>tests/System/src</directory>
         </testsuite>
     </testsuites>
 

@@ -60,9 +60,7 @@ final class CopyNodeModules implements CommandInterface
             }
 
             $outPaths = [$outDir . '/' . $file];
-            if (!$input->getOption('private')) {
-                $outPaths[] = str_replace('public', 'private', $outDir) . '/' . $file;
-            }
+            //$outPaths[] = str_replace('public', 'private', $outDir) . '/' . $file;
             foreach ($outPaths as $outPath) {
                 $this->fs->mkdir(dirname($outPath));
                 $this->fs->copy($path, $outPath);

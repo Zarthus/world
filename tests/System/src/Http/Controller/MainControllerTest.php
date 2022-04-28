@@ -28,12 +28,14 @@ final class MainControllerTest extends ContainerAwareTestCase
         ];
     }
 
+    /** @return list<list<string>> */
     public function dataEndpoints(): array
     {
         return [
             ['/', 'text/html'],
-            //['/favicon.ico', 'x-icon/favicon'],
-            ['/api/info.json', 'application/json'],
+            ['/favicon.ico', 'image/x-icon'],
+            ['/css/dark.css', 'text/css'],
+            //['/api/info.json', 'application/json'],
 
             //['/errors/404', 'text/html', HttpStatusCode::NotFound],
             //['/errors/500', 'text/html', HttpStatusCode::InternalServerError],

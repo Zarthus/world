@@ -19,12 +19,12 @@ jobs:
                   php_version: "8.1"
                   php_extensions: intl
                   command: 'install'
-            - name: Download sass
+            - name: Install node dependencies
               run: |
+                  npm ci
                   npm install -g sass
             - name: Build
               run: |
-                  composer run post-install-cmd
                   composer run publish:pages
             - name: Deploy
               uses: JamesIves/github-pages-deploy-action@v4.2.5

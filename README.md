@@ -27,6 +27,7 @@ See the installation instructions for how to install & run this software.
 git clone git@github.com:zarthus/world
 cd world/
 composer install
+npm install
 
 # optional
 bin/gen-ca # generates the TLS certificates for serving via HTTPS
