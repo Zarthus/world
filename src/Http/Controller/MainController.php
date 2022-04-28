@@ -37,7 +37,7 @@ final class MainController
     public function handle(Request $request): Response
     {
         if ('GET' !== $request->getMethod()) {
-            throw new HttpException("Unsupported method {$request->getMethod()} for {$request->getUri()->getPath()}", HttpStatusCode::MethodNotAllowed->value);
+            throw new HttpException("Unsupported method {$request->getMethod()} for {$request->getUri()->getPath()}", HttpStatusCode::MethodNotAllowed);
         }
         if (str_ends_with($request->getUri()->getPath(), '.php') && !str_contains($request->getUri()->getPath(), '..')) {
             return $this->handlePhp($request);
@@ -53,9 +53,9 @@ final class MainController
                 return $fallback;
             }
 
-            throw new HttpException($e->getMessage(), HttpStatusCode::NotFound->value, $e);
+            throw new HttpException($e->getMessage(), HttpStatusCode::NotFound, $e);
         } catch (CompilerException | \Throwable $e) {
-            throw new HttpException($e->getMessage(), HttpStatusCode::InternalServerError->value, $e);
+            throw new HttpException($e->getMessage(), HttpStatusCode::InternalServerError, $e);
         }
 
         return $this->respond(HttpStatusCode::Ok, (string) $compiled, $compiled->getMimeType());

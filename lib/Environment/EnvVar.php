@@ -12,6 +12,7 @@ enum EnvVar
     case Development;
     /** The minimum loglevel, as Psr\Log\LogLevel */
     case LogLevel;
+    case LogToStdout;
 
     /**
      * list<string> - may be empty if no webserver is needed.

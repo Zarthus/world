@@ -21,6 +21,7 @@ final class Debug implements EnvironmentInterface
             EnvVar::Name => 'Debug',
             EnvVar::Development => true,
             EnvVar::LogLevel => LogLevel::DEBUG,
+            EnvVar::LogToStdout => true,
             EnvVar::HttpListeners => ['https://127.0.0.1:4443', 'https://[::1]:4443', 'http://127.0.0.1:8080', 'http://[::1]:8080'],
             EnvVar::HttpCertificatePath => '{root}/ca/server.pem',
             EnvVar::HttpBaseDir => '/',

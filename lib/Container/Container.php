@@ -11,6 +11,7 @@ use Psr\Container\ContainerInterface;
 use Zarthus\World\Container\ServiceProvider\AbstractServiceProvider;
 use Zarthus\World\Container\ServiceProvider\CompilerServiceProvider;
 use Zarthus\World\Container\ServiceProvider\EnvironmentServiceProvider;
+use Zarthus\World\Container\ServiceProvider\FilePathProvider;
 use Zarthus\World\Container\ServiceProvider\LoggerServiceProvider;
 use Zarthus\World\Container\ServiceProvider\SassServiceProvider;
 use Zarthus\World\Environment\Environment;
@@ -74,6 +75,7 @@ final class Container implements ContainerInterface
     private function init(): void
     {
         $container = new LeagueContainer();
+        $container->addServiceProvider(new FilePathProvider());
         $container->addServiceProvider(new EnvironmentServiceProvider());
         $container->addServiceProvider(new LoggerServiceProvider());
         $container->add(self::class, new ObjectArgument($this));

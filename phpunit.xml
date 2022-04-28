@@ -36,5 +36,6 @@
         <const name="PHPUNIT_TESTSUITE" value="true" />
 
         <env name="LIEFLAND_ENVIRONMENT" value="Tests" />
+        <env name="LIEFLAND_LOG_PATH" value="{root}/tmp/log/" />
     </php>
 </phpunit>

@@ -16,6 +16,7 @@ final class Production implements EnvironmentInterface
         return match ($var) {
             EnvVar::Name => 'Production',
             EnvVar::LogLevel => LogLevel::ALERT,
+            EnvVar::LogToStdout => true,
             EnvVar::Development => false,
             EnvVar::HttpListeners => [],
             EnvVar::HttpCertificatePath => null,

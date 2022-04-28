@@ -19,6 +19,7 @@ final class Pages implements EnvironmentInterface
             EnvVar::Name => 'Pages',
             EnvVar::Development => false,
             EnvVar::LogLevel => LogLevel::ALERT,
+            EnvVar::LogToStdout => true,
             EnvVar::HttpListeners => [],
             EnvVar::HttpCertificatePath => null,
             EnvVar::HttpBaseDir => '/',

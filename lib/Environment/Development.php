@@ -17,6 +17,7 @@ final class Development implements EnvironmentInterface
             EnvVar::Name => 'Development',
             EnvVar::Development => true,
             EnvVar::LogLevel => LogLevel::INFO,
+            EnvVar::LogToStdout => true,
             EnvVar::HttpListeners => ['https://127.0.0.1:4443', 'https://[::1]:4443'],
             EnvVar::HttpCertificatePath => '{root}/ca/server.pem',
             EnvVar::HttpBaseDir => '/',

@@ -12,9 +12,9 @@ class ContainerAwareTestCase extends TestCase
 {
     private Container $container;
 
-    public function __construct(?string $name = null, array $data = [], string $dataName = '')
+    protected function setUp(): void
     {
-        parent::__construct($name, $data, $dataName);
+        parent::setUp();
         $this->container = App::getContainer();
     }
 

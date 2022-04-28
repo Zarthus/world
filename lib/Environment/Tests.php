@@ -16,6 +16,7 @@ final class Tests implements EnvironmentInterface
         return match ($var) {
             EnvVar::Name => 'Tests',
             EnvVar::Development => true,
+            EnvVar::LogToStdout => false,
             EnvVar::LogLevel => LogLevel::DEBUG,
             EnvVar::HttpListeners => [],
             EnvVar::HttpCertificatePath => null,

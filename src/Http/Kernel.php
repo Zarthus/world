@@ -89,10 +89,10 @@ final class Kernel
             } catch (HttpException $e) {
                 $response = yield call(fn () => $this->controller->error($e->getCode(), $e));
             } catch (TemplateNotFoundException | TemplateIllegalException $e) {
-                $code = HttpStatusCode::NotFound->value;
+                $code = HttpStatusCode::NotFound;
                 $response = yield call(fn () => $this->controller->error($code, new HttpException('Template not found', $code, $e)));
             } catch (\Throwable $t) {
-                $code = HttpStatusCode::InternalServerError->value;
+                $code = HttpStatusCode::InternalServerError;
                 $response = yield call(fn () => $this->controller->error($code, new HttpException('Internal Server Error', $code, $t)));
             }
 
