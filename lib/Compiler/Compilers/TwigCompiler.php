@@ -10,7 +10,6 @@ use Twig\Error\Error as TwigError;
 use Twig\Extension\CoreExtension;
 use Twig\Extension\DebugExtension;
 use Twig\Extension\ProfilerExtension;
-use Twig\Loader\FilesystemLoader as TwigFsLoader;
 use Twig\Profiler\Profile;
 use Twig\TwigFunction;
 use Zarthus\World\App\App;
@@ -21,6 +20,7 @@ use Zarthus\World\Compiler\CompilerInterface;
 use Zarthus\World\Compiler\CompilerOptions;
 use Zarthus\World\Compiler\CompilerSupport;
 use Zarthus\World\Compiler\CompileType;
+use Zarthus\World\Compiler\Twig\TwigUniqueFilesystemLoader;
 use Zarthus\World\Container\Container;
 use Zarthus\World\Environment\Environment;
 use Zarthus\World\Environment\EnvVar;
@@ -69,8 +69,10 @@ final class TwigCompiler implements CompilerInterface
         $engine = $this->createEngine($options);
 
         $finder = new Finder();
-        $finder->in($options->getInDirectory());
-        $finder->ignoreDotFiles(true);
+        $finder->in($options->getInDirectory())
+            ->ignoreDotFiles(true)
+            ->exclude('_layouts')
+            ->exclude('_partials');
 
         foreach ($finder as $fileInfo) {
             if ($fileInfo->isDir()) {
@@ -78,52 +80,33 @@ final class TwigCompiler implements CompilerInterface
                 continue;
             }
 
-            $path = str_replace($options->getInDirectory(), '', $fileInfo->getPath());
-            $template = $this->normalizeTemplate($path . '/' . $fileInfo->getFilenameWithoutExtension(), $options->getInDirectory());
-            $contents = $this->compileFile($engine, $options, $template);
+            $template = $this->normalizeTemplate($fileInfo->getRelativePathname(), $options->getInDirectory());
+            $compiled = $this->compileFile($engine, $options, $template);
             $fullPath = $this->createOutPath($options, $template);
 
-            $this->write($fullPath, $contents);
+            $this->write($fullPath, $compiled);
         }
     }
 
     public function compileTemplate(CompilerOptions $options, string $template): void
     {
-        if (!$this->compilerSupport->supports($options, $template)) {
-            throw new TemplateIllegalException($template, $this::class);
-        }
-
-        $contents = $this->renderTemplate($options, $template);
+        $compileResult = $this->renderTemplate($options, $template);
         $fullPath = $this->createOutPath($options, $template);
 
-        $this->write($fullPath, (string) $contents);
+        $this->write($fullPath, $compileResult->getResult());
     }
 
     public function renderTemplate(CompilerOptions $options, string $template): CompileResult
     {
-        if ($options->isLiveCompilation()) {
-            // Handle requests to the HTML dir that aren't HTML files, e.g. favicon.ico
-            $tryPath = $options->getOutDirectory() . '/' . $template;
-            if (!str_ends_with($template, '.twig') && !str_ends_with($template, '.html') &&
-                !is_dir($tryPath) && file_exists($tryPath)) {
-                return new CompileResult(
-                    CompileType::Twig,
-                    file_get_contents($tryPath),
-                    $this->resolveMimeType($template, $options)
-                );
-            }
-        }
-
         $template = $this->normalizeTemplate($template, $options->getInDirectory());
+
         if (!$this->compilerSupport->supports($options, $template)) {
             throw new TemplateIllegalException($template, $this::class);
         }
 
-        $engine = $this->createEngine($options);
-
         return new CompileResult(
             CompileType::Twig,
-            $this->compileFile($engine, $options, $template),
+            $this->compileFile($this->createEngine($options), $options, $template),
             $this->resolveMimeType($template, $options),
         );
     }
@@ -144,7 +127,7 @@ final class TwigCompiler implements CompilerInterface
         }
 
         try {
-            $compiled = $engine->render($template);
+            $compiled = $engine->render($template, []);
         } catch (TwigError $e) {
             $this->getLogger()->critical(implode("\n", [
                 "Compilation of $template failed due to a compiler error: ",
@@ -170,13 +153,14 @@ final class TwigCompiler implements CompilerInterface
 
     private function createEngine(CompilerOptions $options): TwigEnvironment
     {
-        $loader = new TwigFsLoader([$options->getInDirectory()], $options->getInDirectory());
+        $loader = new TwigUniqueFilesystemLoader([$options->getInDirectory()], $options->getInDirectory());
         $twig = new TwigEnvironment($loader, [
             'cache' => $this->environment->getBool(EnvVar::Development) ? false : Path::tmp() . '/twig',
             'debug' => $this->environment->getBool(EnvVar::Development),
             'strict_variables' => true,
             'optimizations' => $this->environment->getBool(EnvVar::Development) ? 0 : -1,
             'autoescape' => 'html',
+            'auto_reload ' => $this->environment->getBool(EnvVar::Development) || $options->isLiveCompilation(),
         ]);
 
         // Assigns global variables to all templates.
@@ -259,15 +243,20 @@ final class TwigCompiler implements CompilerInterface
         if (str_ends_with($options->getInDirectory(), '/html')) {
             $mimeType = 'text/html';
         } else {
+            $replacement = str_replace('.twig', '', $template);
+
             $mimeType = null;
             $tryMimeTypes = [
+                $options->getOutDirectory() . '/' . $replacement,
                 $options->getOutDirectory() . '/' . $template,
                 $options->getInDirectory() . '/' . $template,
             ];
             foreach ($tryMimeTypes as $path) {
                 if (file_exists($path)) {
                     $mimeType = mime_content_type($path);
-                    $this->getLogger()->debug("Determined MimeType of $path to be $mimeType");
+                    $relativePath = str_replace(Path::root(), '', $path);
+                    $this->getLogger()->debug("Determined MimeType of $template to be $mimeType ($relativePath)");
+                    break;
                 }
             }
         }

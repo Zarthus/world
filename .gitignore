@@ -1,15 +1,10 @@
+# Project
 /public
-/*.cache
-/.php-cs-fixer
-/private/html/css
-
-/vendor
-/composer.lock
 /tmp
 /ca
-/tests/coverage
+/*.cache
 
-
+## Pprovided binaries
 bin
 !bin/gen-ca.sh
 !bin/cli
@@ -18,3 +13,13 @@ bin
 /.env
 /.env.*
 !/.env.dist
+
+# php
+/vendor
+/composer.lock
+/.php-cs-fixer
+/tests/coverage
+
+# npm
+/package-lock.json
+/node_modules

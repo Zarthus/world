@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Zarthus\World\Compiler\Compilers;
 
+use Zarthus\Sass\Cli\V1\Options\SassCliOptions;
+use Zarthus\Sass\Cli\V1\Options\SassStyle;
 use Zarthus\Sass\Sass;
 use Zarthus\World\App\LogAwareTrait;
 use Zarthus\World\Compiler\CompileResult;
@@ -54,7 +56,7 @@ final class SassCompiler implements CompilerInterface
             throw new CompilerException(self::class, "Unsupported instruction; " . $options->getInDirectory());
         }
 
-        $this->sassCompiler->getApi()->compile($options->getInDirectory(), $options->getOutDirectory());
+        $this->sassCompiler->getApi()->compile($options->getInDirectory(), $options->getOutDirectory(), $this->createCliOptions());
     }
 
     public function compileTemplate(CompilerOptions $options, string $template): void
@@ -66,6 +68,7 @@ final class SassCompiler implements CompilerInterface
         $this->sassCompiler->getApi()->compile(
             $this->getTemplatePath($options->getInDirectory(), $template),
             $this->getTemplatePath($options->getOutDirectory(), $template),
+            $this->createCliOptions(),
         );
     }
 
@@ -78,11 +81,20 @@ final class SassCompiler implements CompilerInterface
         return new CompileResult(CompileType::Css, $this->sassCompiler->getApi()->compile(
             $this->getTemplatePath($options->getInDirectory(), $template),
             $this->getTemplatePath($options->getOutDirectory(), $template),
+            $this->createCliOptions(),
         )->getCss());
     }
 
     private function getTemplatePath(string $path, string $template): string
     {
         return $path . '/' . $template;
+    }
+
+    private function createCliOptions(): ?SassCliOptions
+    {
+        if ($this->environment->getBool(EnvVar::Compress)) {
+            return (new SassCliOptions())->withStyle(SassStyle::Compressed);
+        }
+        return null;
     }
 }

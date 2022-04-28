@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Zarthus\World\App\Http;
 
 use Amp\Http\Server\HttpServer;
+use Amp\Http\Server\Options;
 use Amp\Http\Server\Request;
 use Amp\Http\Server\RequestHandler\CallableRequestHandler;
 use Amp\Http\Server\Response;
@@ -16,6 +17,7 @@ use Amp\Socket\Server;
 use Amp\Socket\ServerTlsContext;
 use League\Uri\Uri;
 use Monolog\Handler\RotatingFileHandler;
+use Psr\Log\LogLevel;
 use Zarthus\Http\Status\HttpStatusCode;
 use Zarthus\World\App\App;
 use Zarthus\World\App\Cli\Command\WebserverCommand;
@@ -32,6 +34,8 @@ use function Amp\call;
 /**
  * Primarily for development purposes, start a webserver with PHP support and use this entrypoint
  * to develop templates live. See {@see WebserverCommand}
+ *
+ * If you need extensive debugging, run `php -d zend.assertions=1 bin/cli webserver` instead.
  */
 final class Kernel
 {
@@ -55,58 +59,22 @@ final class Kernel
     public function start(): void
     {
         ini_set('max_execution_time', '0');
+        $server = $this->createHttpServer();
 
-        Loop::run(function () {
-            $listeners = array_map(
-                static fn (string $listener) => Uri::createFromString($listener),
-                $this->environment->getStringArray(EnvVar::HttpListeners),
-            );
-
-            if ([] === $listeners) {
-                throw new \InvalidArgumentException("No listeners configured for {$this->environment}, cannot start HTTP server.");
-            }
-
-            $sockets = array_map(
-                function (Uri $listener) {
-                    if ('https' === $listener->getScheme()) {
-                        $context = $this->getContext(true);
-                    } else {
-                        $context = $this->getContext(false);
-                    }
-
-                    return Server::listen("{$listener->getHost()}:{$listener->getPort()}", $context);
-                },
-                $listeners,
-            );
-
-            $server = new HttpServer(
-                $sockets,
-                new CallableRequestHandler(function (Request $request) {
-                    $this->httpLogger->info($request->getMethod() . ' request from [' . $request->getClient()->getRemoteAddress()->toString() . ']: ' . $request->getUri()->getPath());
-
-                    /** @var Response $response */
-                    $response = yield $this->handleRequest($request);
-                    $this->httpLogger->info($response->getStatus() . ' response to   [' . $request->getClient()->getRemoteAddress()->toString() . ']: ' . $request->getUri()->getPath());
-
-                    return $response;
-                }),
-                $this->logger,
-            );
-
-            $this->httpLogger->info('Starting up..');
-            yield $server->start();
-
-            if (!defined('SIGINT')) {
-                $this->logger->warning('You are on a system without decent signal handling, functionality may not behave as intended.');
-                return;
-            }
-
+        if (!defined('SIGHUP') || !defined('SIGINT')) {
+            $this->logger->warning('You are on a system without decent signal handling, functionality may not behave as intended.');
+        } else {
             Loop::onSignal(SIGINT, function (string $watcherId) use ($server) {
-                $this->logger->info('Shutting down.');
-                $this->httpLogger->info('Shutting down.');
+                $this->logBoth(LogLevel::INFO, 'Shutting down webserver..');
                 Loop::cancel($watcherId);
                 yield $server->stop();
+                Loop::stop();
             });
+        }
+
+        Loop::run(function () use ($server) {
+            $this->logBoth(LogLevel::INFO, 'Starting up webserver..');
+            yield $server->start();
         });
     }
 
@@ -153,5 +121,59 @@ final class Kernel
         }
 
         return null;
+    }
+
+    private function createOptions(): Options
+    {
+        $options = new Options();
+        if ($this->environment->getBool(EnvVar::Development)) {
+            $options = $options->withDebugMode();
+        }
+
+        if ($this->environment->get(EnvVar::Compress)) {
+            $options = $options->withCompression();
+        }
+
+        return $options;
+    }
+
+    private function createHttpServer(): HttpServer
+    {
+        $listeners = array_map(
+            static fn (string $listener) => Uri::createFromString($listener),
+            $this->environment->getStringArray(EnvVar::HttpListeners),
+        );
+
+        if ([] === $listeners) {
+            throw new \InvalidArgumentException("No listeners configured for {$this->environment}, cannot start HTTP server.");
+        }
+
+        $sockets = array_map(
+            fn (Uri $listener) => Server::listen(
+                "{$listener->getHost()}:{$listener->getPort()}",
+                $this->getContext('https' === $listener->getScheme())
+            ),
+            $listeners,
+        );
+
+        return new HttpServer(
+            $sockets,
+            new CallableRequestHandler(function (Request $request) {
+                $this->httpLogger->info($request->getMethod() . ' request from [' . $request->getClient()->getRemoteAddress()->toString() . ']: ' . $request->getUri()->getPath());
+
+                /** @var Response $response */
+                $response = yield $this->handleRequest($request);
+                $this->httpLogger->info($response->getStatus() . ' response to  [' . $request->getClient()->getRemoteAddress()->toString() . ']: ' . $request->getUri()->getPath());
+
+                return $response;
+            }),
+            $this->logger,
+            $this->createOptions(),
+        );
+    }
+
+    private function logBoth(string $level, string $message): void
+    {
+        $this->logger->log($level, $message);
     }
 }

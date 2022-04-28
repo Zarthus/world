@@ -41,7 +41,7 @@
         "symfony/console": "^6.0",
         "symfony/finder": "^6.0",
         "twig/twig": "^3.3",
-        "zarthus/sass-bridge": "1.0-rc3"
+        "zarthus/sass-bridge": "1.0-rc4"
     },
     "require-dev": {
         "amphp/http-server": "^2.1",
@@ -62,11 +62,12 @@
         "cli": "@php bin/cli",
 
         "build": ["@build:async"],
-        "serve": ["@build", "Composer\\Config::disableProcessTimeout", "@cli webserver"],
+        "serve": ["@build", "@webserver"],
         "test": ["@test:unit", "@test:system"],
         "lint": ["@lint:cs", "@lint:psalm"],
         "fix": ["@fix:cs"],
         "clean": ["@cli clean:project --allow-failure"],
+        "webserver": ["Composer\\Config::disableProcessTimeout", "@cli webserver"],
 
         "test:unit": "LIEFLAND_ENVIRONMENT=Tests phpunit --testsuite=unit --no-coverage",
         "test:system": "LIEFLAND_ENVIRONMENT=Tests phpunit --testsuite=system --no-coverage",
