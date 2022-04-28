@@ -34,8 +34,8 @@ final class LoggerServiceProvider extends AbstractServiceProvider
         if (PHP_SAPI === 'cli' && $environment->getBool(EnvVar::LogToStdout)) {
             $handlers[] = new StreamHandler(STDOUT, $environment->get(EnvVar::LogLevel), true, null, false);
         }
-        if (!empty(getenv('LIEFLAND_LOG_PATH'))) {
-            $logFile = getenv('LIEFLAND_LOG_PATH') . $environment->getString(EnvVar::Name) . '.log';
+        if (!empty($envPath = getenv('LIEFLAND_LOG_PATH'))) {
+            $logFile = $envPath . $environment->getString(EnvVar::Name) . '.log';
             $logFile = str_replace('{root}', $this->container->get('paths.root'), $logFile);
             $handlers[] = new RotatingFileHandler($logFile, 2, $environment->get(EnvVar::LogLevel));
         }

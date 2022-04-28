@@ -10,6 +10,10 @@
         <directory name="lib"/>
         <directory name="src"/>
 
+        <ignoreFiles>
+            <directory name="vendor" />
+            <directory name="tests" />
+        </ignoreFiles>
         <!--
             todo: psalm phpunit plugin is not properly functioning
             <directory name="tests/Framework"/>

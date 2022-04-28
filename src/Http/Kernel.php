@@ -172,6 +172,10 @@ final class Kernel
         );
     }
 
+    /**
+     * @psalm-param $level LogLevel::*
+     * @psalm-suppress ArgumentTypeCoercion
+     */
     private function logBoth(string $level, string $message): void
     {
         $this->logger->log($level, $message);

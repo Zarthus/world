@@ -74,9 +74,9 @@ final class MainController
 
         $compilerOptions = new CompilerOptions(Path::www(true) . '/html', Path::www(false) . '/', true);
         try {
-            $compiled = $this->compiler->renderTemplate($compilerOptions, "errors/$code");
+            $compiled = $this->compiler->renderTemplate($compilerOptions, "errors/$code->value");
         } catch (TemplateNotFoundException $e) {
-            $this->getLogger()->error("Non-existent error template for HTTP $code, serving 500", ['exception' => $e]);
+            $this->getLogger()->error("Non-existent error template for HTTP $code->value, serving 500", ['exception' => $e]);
             $compiled = $this->compiler->renderTemplate($compilerOptions, "errors/500");
         }
 
@@ -117,12 +117,12 @@ final class MainController
         return $headers;
     }
 
-    private function renderDebugErrorPage(int $code, HttpException $exception): Response
+    private function renderDebugErrorPage(HttpStatusCode $code, HttpException $exception): Response
     {
-        $this->getLogger()->debug($exception::class . "($code): {$exception->getMessage()}");
+        $this->getLogger()->debug($exception::class . "($code->value): {$exception->getMessage()}");
         $htmlErrorRenderer = new HtmlErrorRenderer(true);
         $e = $htmlErrorRenderer->render($exception->getPrevious() ?? $exception);
-        return new Response($code, $e->getHeaders(), $e->getAsString());
+        return new Response($code->value, $e->getHeaders(), $e->getAsString());
     }
 
     /** @return array{options: CompilerOptions, template: string} */
