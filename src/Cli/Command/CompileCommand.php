@@ -22,8 +22,8 @@ use Zarthus\World\Exception\CompilerException;
 final class CompileCommand extends AbstractCompileCommand
 {
     private const COMPILER_OUT_REPLACEMENTS = [
-        ['scss', 'sass', 'html'],
-        ['css',  'css',  ''],
+        ['html'],
+        [''],
     ];
 
     public function __construct(

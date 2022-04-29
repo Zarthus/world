@@ -32,7 +32,7 @@ final class SassCompiler implements CompilerInterface
         private readonly Sass $sassCompiler,
         private readonly MimeTypeResolver $mimeTypeResolver,
     ) {
-        $this->compilerSupport = new CompilerSupport(['css', 'scss', 'sass'], ['scss', 'sass', 'css', 'map']);
+        $this->compilerSupport = new CompilerSupport(['style'], ['scss', 'sass', 'css', 'map']);
     }
 
     public function supports(CompilerOptions $options, ?string $template): bool

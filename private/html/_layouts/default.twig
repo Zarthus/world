@@ -15,10 +15,11 @@
 
     {% include "_partials/favicon.twig" %}
 
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/dark.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('style/dark.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('style/icons.css') }}">
     {% block stylesheets %}{% endblock %}
 </head>
-<body>
+<body class="no-js dark">
     {% block content %}{% endblock %}
 
     {% block javascript %}{% endblock %}

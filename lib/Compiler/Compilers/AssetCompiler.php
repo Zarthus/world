@@ -33,7 +33,7 @@ final class AssetCompiler implements CompilerInterface
         private readonly Environment $environment,
         private readonly MimeTypeResolver $mimeTypeResolver,
     ) {
-        $this->compilerSupport = new CompilerSupport([], ['png', 'jpg', 'ico', 'woff', 'woff2']);
+        $this->compilerSupport = new CompilerSupport([], ['png', 'jpg', 'jpeg', 'gif', 'ico', 'woff', 'woff2', 'js']);
     }
 
     public function supports(CompilerOptions $options, ?string $template): bool

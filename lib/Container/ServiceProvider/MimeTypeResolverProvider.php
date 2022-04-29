@@ -12,7 +12,8 @@ final class MimeTypeResolverProvider extends AbstractServiceProvider
     private const MAPPINGS = [
         'text/css' => ['css', 'scss', 'sass'],
         'text/html' => ['html', 'twig', 'md'],
-        'application/json' => ['json'],
+        'test/javascript' => ['js'],
+        'application/json' => ['json', 'json.twig'],
         'image/x-icon' => ['ico'],
     ];
 
