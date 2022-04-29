@@ -25,8 +25,6 @@ final class SassCompiler implements CompilerInterface
     use LogAwareTrait;
 
     private CompilerSupport $compilerSupport;
-    /** @var array<string, false|int> */
-    private array $mtimeCache = [];
 
     public function __construct(
         private readonly Container $container,
@@ -39,10 +37,6 @@ final class SassCompiler implements CompilerInterface
 
     public function supports(CompilerOptions $options, ?string $template): bool
     {
-        if (!$this->environment->getBool(EnvVar::Sass)) {
-            return false;
-        }
-
         return $this->compilerSupport->supports($options, $template);
     }
 
@@ -70,7 +64,7 @@ final class SassCompiler implements CompilerInterface
             throw new TemplateNotFoundException($template, $options, self::class);
         }
 
-        if (!str_ends_with($template, '.map')) {
+        if (!str_ends_with($template, '.map') && $this->environment->getBool(EnvVar::Sass)) {
             $this->compile($options);
         }
 

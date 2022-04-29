@@ -52,6 +52,7 @@ final class GroupCompiler implements CompilerInterface
             if (null !== $lastException) {
                 throw $lastException;
             }
+
             throw new TemplateNotFoundException('(null)', $options, $this::class);
         }
     }
@@ -76,6 +77,7 @@ final class GroupCompiler implements CompilerInterface
         $compilers = $this->getCompilers($options, $template, $excludes);
 
         if ([] === $compilers) {
+            $this->getLogger()->debug(sprintf('No compilers support %s@%s', basename($options->getInDirectory()), $template ?? '(null)'));
             throw new TemplateNotFoundException($template ?? '(null)', $options, $this::class);
         }
 

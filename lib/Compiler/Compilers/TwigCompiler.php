@@ -47,7 +47,10 @@ final class TwigCompiler implements CompilerInterface
     {
         if (!$this->compilerSupport->supports($options, $template)) {
             // Emulate `/` mapping to `/index.html`
-            if (null !== $template && str_ends_with($template, '/') && $options->isLiveCompilation()) {
+            // Does not work for mapping `/foo` to `/foo/index.html`, a trailing slash is required.
+            if ($options->isLiveCompilation() &&
+                (null !== $template && str_ends_with($template, '/'))
+            ) {
                 return true;
             }
 
