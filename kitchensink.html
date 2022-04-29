@@ -1,0 +1,1062 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>World Builder | Kitchen Sink</title>
+    <meta name="description" content="World Builder | A Fantasy World">
+    <meta name="author" content="Zarthus">
+
+    <meta property="og:title" content="World Builder">
+    <meta property="og:description" content="The Fantasy World of World Builder">
+    <meta property="og:type" content="website">
+    
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="" type="image/x-icon" sizes="256x256" href="/favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="/style/dark.css">
+    <link rel="stylesheet" type="text/css" href="/style/icons.css">
+    </head>
+<body class="no-js dark">
+
+    <div class="container">
+    <div class="box">
+        <div class="content">
+            <h3>Control Panel</h3>
+            <div class="columns is-multiline">
+            
+                <div class="column">
+                    <button class="button is-primary" value="is-primary" onclick="setModifier('is-primary')">is-primary</button>
+                    <button class="button is-primary-dark" value="is-primary-dark" onclick="setModifier('is-primary-dark')">is-primary-dark</button>
+                    <button class="button is-primary-light" value="is-primary-light" onclick="setModifier('is-primary-light')">is-primary-light</button>
+                    <br>
+                </div>
+            
+                <div class="column">
+                    <button class="button is-link" value="is-link" onclick="setModifier('is-link')">is-link</button>
+                    <button class="button is-link-dark" value="is-link-dark" onclick="setModifier('is-link-dark')">is-link-dark</button>
+                    <button class="button is-link-light" value="is-link-light" onclick="setModifier('is-link-light')">is-link-light</button>
+                    <br>
+                </div>
+            
+                <div class="column">
+                    <button class="button is-info" value="is-info" onclick="setModifier('is-info')">is-info</button>
+                    <button class="button is-info-dark" value="is-info-dark" onclick="setModifier('is-info-dark')">is-info-dark</button>
+                    <button class="button is-info-light" value="is-info-light" onclick="setModifier('is-info-light')">is-info-light</button>
+                    <br>
+                </div>
+            
+                <div class="column">
+                    <button class="button is-success" value="is-success" onclick="setModifier('is-success')">is-success</button>
+                    <button class="button is-success-dark" value="is-success-dark" onclick="setModifier('is-success-dark')">is-success-dark</button>
+                    <button class="button is-success-light" value="is-success-light" onclick="setModifier('is-success-light')">is-success-light</button>
+                    <br>
+                </div>
+            
+                <div class="column">
+                    <button class="button is-warning" value="is-warning" onclick="setModifier('is-warning')">is-warning</button>
+                    <button class="button is-warning-dark" value="is-warning-dark" onclick="setModifier('is-warning-dark')">is-warning-dark</button>
+                    <button class="button is-warning-light" value="is-warning-light" onclick="setModifier('is-warning-light')">is-warning-light</button>
+                    <br>
+                </div>
+            
+                <div class="column">
+                    <button class="button is-danger" value="is-danger" onclick="setModifier('is-danger')">is-danger</button>
+                    <button class="button is-danger-dark" value="is-danger-dark" onclick="setModifier('is-danger-dark')">is-danger-dark</button>
+                    <button class="button is-danger-light" value="is-danger-light" onclick="setModifier('is-danger-light')">is-danger-light</button>
+                    <br>
+                </div>
+            
+                <div class="column">
+                    <button class="button has-text-primary" value="has-text-primary" onclick="setModifier('has-text-primary')">has-text-primary</button>
+                    <button class="button has-text-primary-dark" value="has-text-primary-dark" onclick="setModifier('has-text-primary-dark')">has-text-primary-dark</button>
+                    <button class="button has-text-primary-light" value="has-text-primary-light" onclick="setModifier('has-text-primary-light')">has-text-primary-light</button>
+                    <br>
+                </div>
+            
+                <div class="column">
+                    <button class="button has-text-link" value="has-text-link" onclick="setModifier('has-text-link')">has-text-link</button>
+                    <button class="button has-text-link-dark" value="has-text-link-dark" onclick="setModifier('has-text-link-dark')">has-text-link-dark</button>
+                    <button class="button has-text-link-light" value="has-text-link-light" onclick="setModifier('has-text-link-light')">has-text-link-light</button>
+                    <br>
+                </div>
+            
+                <div class="column">
+                    <button class="button has-text-info" value="has-text-info" onclick="setModifier('has-text-info')">has-text-info</button>
+                    <button class="button has-text-info-dark" value="has-text-info-dark" onclick="setModifier('has-text-info-dark')">has-text-info-dark</button>
+                    <button class="button has-text-info-light" value="has-text-info-light" onclick="setModifier('has-text-info-light')">has-text-info-light</button>
+                    <br>
+                </div>
+            
+                <div class="column">
+                    <button class="button has-text-success" value="has-text-success" onclick="setModifier('has-text-success')">has-text-success</button>
+                    <button class="button has-text-success-dark" value="has-text-success-dark" onclick="setModifier('has-text-success-dark')">has-text-success-dark</button>
+                    <button class="button has-text-success-light" value="has-text-success-light" onclick="setModifier('has-text-success-light')">has-text-success-light</button>
+                    <br>
+                </div>
+            
+                <div class="column">
+                    <button class="button has-text-warning" value="has-text-warning" onclick="setModifier('has-text-warning')">has-text-warning</button>
+                    <button class="button has-text-warning-dark" value="has-text-warning-dark" onclick="setModifier('has-text-warning-dark')">has-text-warning-dark</button>
+                    <button class="button has-text-warning-light" value="has-text-warning-light" onclick="setModifier('has-text-warning-light')">has-text-warning-light</button>
+                    <br>
+                </div>
+            
+                <div class="column">
+                    <button class="button has-text-danger" value="has-text-danger" onclick="setModifier('has-text-danger')">has-text-danger</button>
+                    <button class="button has-text-danger-dark" value="has-text-danger-dark" onclick="setModifier('has-text-danger-dark')">has-text-danger-dark</button>
+                    <button class="button has-text-danger-light" value="has-text-danger-light" onclick="setModifier('has-text-danger-light')">has-text-danger-light</button>
+                    <br>
+                </div>
+            
+                <div class="column">
+                    <button class="button has-background-primary" value="has-background-primary" onclick="setModifier('has-background-primary')">has-background-primary</button>
+                    <button class="button has-background-primary-dark" value="has-background-primary-dark" onclick="setModifier('has-background-primary-dark')">has-background-primary-dark</button>
+                    <button class="button has-background-primary-light" value="has-background-primary-light" onclick="setModifier('has-background-primary-light')">has-background-primary-light</button>
+                    <br>
+                </div>
+            
+                <div class="column">
+                    <button class="button has-background-link" value="has-background-link" onclick="setModifier('has-background-link')">has-background-link</button>
+                    <button class="button has-background-link-dark" value="has-background-link-dark" onclick="setModifier('has-background-link-dark')">has-background-link-dark</button>
+                    <button class="button has-background-link-light" value="has-background-link-light" onclick="setModifier('has-background-link-light')">has-background-link-light</button>
+                    <br>
+                </div>
+            
+                <div class="column">
+                    <button class="button has-background-info" value="has-background-info" onclick="setModifier('has-background-info')">has-background-info</button>
+                    <button class="button has-background-info-dark" value="has-background-info-dark" onclick="setModifier('has-background-info-dark')">has-background-info-dark</button>
+                    <button class="button has-background-info-light" value="has-background-info-light" onclick="setModifier('has-background-info-light')">has-background-info-light</button>
+                    <br>
+                </div>
+            
+                <div class="column">
+                    <button class="button has-background-success" value="has-background-success" onclick="setModifier('has-background-success')">has-background-success</button>
+                    <button class="button has-background-success-dark" value="has-background-success-dark" onclick="setModifier('has-background-success-dark')">has-background-success-dark</button>
+                    <button class="button has-background-success-light" value="has-background-success-light" onclick="setModifier('has-background-success-light')">has-background-success-light</button>
+                    <br>
+                </div>
+            
+                <div class="column">
+                    <button class="button has-background-warning" value="has-background-warning" onclick="setModifier('has-background-warning')">has-background-warning</button>
+                    <button class="button has-background-warning-dark" value="has-background-warning-dark" onclick="setModifier('has-background-warning-dark')">has-background-warning-dark</button>
+                    <button class="button has-background-warning-light" value="has-background-warning-light" onclick="setModifier('has-background-warning-light')">has-background-warning-light</button>
+                    <br>
+                </div>
+            
+                <div class="column">
+                    <button class="button has-background-danger" value="has-background-danger" onclick="setModifier('has-background-danger')">has-background-danger</button>
+                    <button class="button has-background-danger-dark" value="has-background-danger-dark" onclick="setModifier('has-background-danger-dark')">has-background-danger-dark</button>
+                    <button class="button has-background-danger-light" value="has-background-danger-light" onclick="setModifier('has-background-danger-light')">has-background-danger-light</button>
+                    <br>
+                </div>
+            
+                <div class="column">
+                    <button class="button has-background-primary" value="has-background-primary" onclick="setModifier('has-background-primary')">has-background-primary</button>
+                    <button class="button has-background-primary-dark" value="has-background-primary-dark" onclick="setModifier('has-background-primary-dark')">has-background-primary-dark</button>
+                    <button class="button has-background-primary-light" value="has-background-primary-light" onclick="setModifier('has-background-primary-light')">has-background-primary-light</button>
+                    <br>
+                </div>
+            
+                <div class="column">
+                    <button class="button has-background-link" value="has-background-link" onclick="setModifier('has-background-link')">has-background-link</button>
+                    <button class="button has-background-link-dark" value="has-background-link-dark" onclick="setModifier('has-background-link-dark')">has-background-link-dark</button>
+                    <button class="button has-background-link-light" value="has-background-link-light" onclick="setModifier('has-background-link-light')">has-background-link-light</button>
+                    <br>
+                </div>
+            
+                <div class="column">
+                    <button class="button has-background-info" value="has-background-info" onclick="setModifier('has-background-info')">has-background-info</button>
+                    <button class="button has-background-info-dark" value="has-background-info-dark" onclick="setModifier('has-background-info-dark')">has-background-info-dark</button>
+                    <button class="button has-background-info-light" value="has-background-info-light" onclick="setModifier('has-background-info-light')">has-background-info-light</button>
+                    <br>
+                </div>
+            
+                <div class="column">
+                    <button class="button has-background-success" value="has-background-success" onclick="setModifier('has-background-success')">has-background-success</button>
+                    <button class="button has-background-success-dark" value="has-background-success-dark" onclick="setModifier('has-background-success-dark')">has-background-success-dark</button>
+                    <button class="button has-background-success-light" value="has-background-success-light" onclick="setModifier('has-background-success-light')">has-background-success-light</button>
+                    <br>
+                </div>
+            
+                <div class="column">
+                    <button class="button has-background-warning" value="has-background-warning" onclick="setModifier('has-background-warning')">has-background-warning</button>
+                    <button class="button has-background-warning-dark" value="has-background-warning-dark" onclick="setModifier('has-background-warning-dark')">has-background-warning-dark</button>
+                    <button class="button has-background-warning-light" value="has-background-warning-light" onclick="setModifier('has-background-warning-light')">has-background-warning-light</button>
+                    <br>
+                </div>
+            
+                <div class="column">
+                    <button class="button has-background-danger" value="has-background-danger" onclick="setModifier('has-background-danger')">has-background-danger</button>
+                    <button class="button has-background-danger-dark" value="has-background-danger-dark" onclick="setModifier('has-background-danger-dark')">has-background-danger-dark</button>
+                    <button class="button has-background-danger-light" value="has-background-danger-light" onclick="setModifier('has-background-danger-light')">has-background-danger-light</button>
+                    <br>
+                </div>
+            
+                <div class="column">
+                    <button class="button is-small" value="is-small" onclick="setModifier('is-small')">is-small</button>
+                    <button class="button is-small-dark" value="is-small-dark" onclick="setModifier('is-small-dark')">is-small-dark</button>
+                    <button class="button is-small-light" value="is-small-light" onclick="setModifier('is-small-light')">is-small-light</button>
+                    <br>
+                </div>
+            
+                <div class="column">
+                    <button class="button is-medium" value="is-medium" onclick="setModifier('is-medium')">is-medium</button>
+                    <button class="button is-medium-dark" value="is-medium-dark" onclick="setModifier('is-medium-dark')">is-medium-dark</button>
+                    <button class="button is-medium-light" value="is-medium-light" onclick="setModifier('is-medium-light')">is-medium-light</button>
+                    <br>
+                </div>
+            
+                <div class="column">
+                    <button class="button is-large" value="is-large" onclick="setModifier('is-large')">is-large</button>
+                    <button class="button is-large-dark" value="is-large-dark" onclick="setModifier('is-large-dark')">is-large-dark</button>
+                    <button class="button is-large-light" value="is-large-light" onclick="setModifier('is-large-light')">is-large-light</button>
+                    <br>
+                </div>
+            
+                <div class="column">
+                    <button class="button is-outlined" value="is-outlined" onclick="setModifier('is-outlined')">is-outlined</button>
+                    <button class="button is-outlined-dark" value="is-outlined-dark" onclick="setModifier('is-outlined-dark')">is-outlined-dark</button>
+                    <button class="button is-outlined-light" value="is-outlined-light" onclick="setModifier('is-outlined-light')">is-outlined-light</button>
+                    <br>
+                </div>
+            
+                <div class="column">
+                    <button class="button is-loading" value="is-loading" onclick="setModifier('is-loading')">is-loading</button>
+                    <button class="button is-loading-dark" value="is-loading-dark" onclick="setModifier('is-loading-dark')">is-loading-dark</button>
+                    <button class="button is-loading-light" value="is-loading-light" onclick="setModifier('is-loading-light')">is-loading-light</button>
+                    <br>
+                </div>
+            
+                <div class="column">
+                    <button class="button" value="is-danger" onclick="setModifier('none-set')">Unset Modifier</button>
+                    <button class="button" onclick="toggleCollapse('basic-html')">Toggle Collapse Basic HTML</button>
+                    <button class="button" onclick="toggleCollapse('bulma-elements')">Toggle Collapse Bulma Elements</button>
+                    <button class="button" onclick="toggleCollapse('bulma-components')">Toggle Collapse Bulma Components</button>
+                    <button class="button" onclick="toggleCollapse('bulma-forms')">Toggle Collapse Bulma Forms</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        let activeModifier = null;
+        function setModifier(mod) {
+            const target = document.getElementById('js-apply');
+
+            for (const divs of target.children) {
+                for (const elem of divs.children) {
+                    if (null !== activeModifier) {
+                        elem.classList.remove(activeModifier);
+                    }
+                    elem.classList.add(mod);
+                }
+            }
+            activeModifier = mod;
+            console.log('Set active modifier to ' + mod);
+        }
+
+        function toggleCollapse(mod) {
+            const cl = document.getElementById(mod).classList;
+
+            if (cl.contains('is-hidden')) {
+                cl.remove('is-hidden');
+            } else {
+                cl.add('is-hidden');
+            }
+        }
+    </script>
+</div>
+<br>
+
+<div id="js-apply" class="container content">
+    <div id="basic-html">
+        <h1>Heading 1</h1><h2>Heading 2</h2><h3>Heading 3</h3><h4>Heading 4</h4><h5>Heading 5</h5><h6>Heading 6</h6>
+        <h1>HTML Kitchen Sink</h1>
+
+        <h2>a</h2>
+        <a href="#">a</a>
+        <br>
+
+
+        <h2>abbr</h2>
+        <abbr title="abbr">Mr. Mrs. Dr.</abbr>
+        <br>
+
+
+        <h2>address</h2>
+        <address>1234 Address St.</address>
+        <br>
+
+
+        <h2>article</h2>
+        <article>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus et architecto officiis minus aspernatur, odio nobis ratione ex ducimus veniam voluptatibus totam, culpa magni beatae cumque nihil dolor enim. Nam.</article>
+        <br>
+
+
+        <h2>aside</h2>
+        <aside>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt non maxime rerum laboriosam, voluptas esse similique pariatur, autem numquam harum mollitia ex, maiores odit, nemo earum ipsam optio animi. Cupiditate!</aside>
+        <br>
+
+
+        <h2>audio</h2>
+        <audio controls>
+            <source src="https://s3.amazonaws.com/bw.temp/Difference.wav" type="audio/wav">
+            Nope
+        </audio>
+        <br>
+
+
+        <h2>b</h2>
+        <b>This is bold text!</b>
+        <br>
+
+
+        <h2>blockquote</h2>
+        <blockquote>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quibusdam illum aperiam sed officia sit ex. Rem dolorum itaque quasi neque ea architecto, dicta molestiae corporis, voluptates dolore eligendi numquam. Veritatis?
+
+            - Foobar
+        </blockquote>
+        <br>
+
+
+        <h2>button</h2>
+        <button>I'm a button!</button>
+        <br>
+
+
+        <h2>canvas</h2>
+        <canvas></canvas>
+        <br>
+
+
+        <h2>caption</h2>
+        <table>
+            <caption>I'm a caption inside a table! Whoot!</caption>
+        </table>
+        <br>
+
+
+        <h2>cite</h2>
+        <p><cite>I'm cited text</cite> and I'm not.</p>
+        <br>
+
+
+        <h2>code</h2>
+        <p><code>I'm code</code> and I'm not</p>
+        <br>
+
+
+        <h2>div</h2>
+        <div>I'm a div.</div>
+        <br>
+
+
+        <h2>dl</h2>
+        <dl>
+            <dt>Data Thing</dt>
+            <dd>Data data</dd>
+            <dt>Data Thing</dt>
+            <dd>Data data</dd>
+        </dl>
+        <br>
+
+
+        <h2>del</h2>
+        <p>It's <del>gonna be</del> already been deleted!</p>
+        <br>
+
+
+        <h2>dfn</h2>
+        <p>The <dfn>dfn</dfn> tag represents the instance of a defined term.</p>
+        <br>
+
+
+        <h2>em</h2>
+        <p>Give your text <em>emphasis</em>!</p>
+        <br>
+
+
+        <h2>fieldset</h2>
+        <h2>legend</h2>
+        <form>
+            <fieldset>
+                <legend>Fieldset:</legend>
+                Purpose: <input type="text"><br>
+            </fieldset>
+        </form>
+        <br>
+
+
+
+        <h2>figure</h2>
+        <h2>figcaption</h2>
+        <figure>
+            <img src="https://placehold.it/128x128" alt="Image">
+            <figcaption>I'm a figure caption!</figcaption>
+        </figure>
+        <br>
+
+
+        <h2>footer</h2>
+        <footer>I'm a footer!</footer>
+        <br>
+
+
+
+        <h1>h1</h1>
+        <h2>h2</h2>
+        <h3>h3</h3>
+        <h4>h4</h4>
+        <h5>h5</h5>
+        <h6>h6</h6>
+        <br>
+
+
+        <h2>header</h2>
+        <header>I'm a header!</header>
+        <br>
+
+        <h2>hr</h2>
+        <hr>
+        <br>
+
+
+        <h2>i</h2>
+        <i>I'm italicized text!</i>
+        <br>
+
+
+        <h2>img</h2>
+        <img src="https://placehold.it/128x128" alt="Image">
+        <br>
+
+
+        <h2>label</h2>
+        <h2>input</h2>
+        <h2>select</h2>
+        <h2>textarea</h2>
+        <form>
+            I'm a form
+            <label>button</label> <input type="button"> <br>
+            <label>checkbox</label> <input type="checkbox"> <br>
+            <label>color</label> <input type="color"> <br>
+            <label>date</label> <input type="date"> <br>
+            <label>datetime</label> <input type="datetime"> <br>
+            <label>datetime-local</label> <input type="datetime-local"> <br>
+            <label>email</label> <input type="email"> <br>
+            <label>file</label> <input type="file"> <br>
+            <label>image</label> <input type="image"> <br>
+            <label>month</label> <input type="month"> <br>
+            <label>number</label> <input type="number"> <br>
+            <label>password</label> <input type="password" autocomplete="current-password"> <br>
+            <label>radio</label> <input type="radio"> <br>
+            <label>range</label> <input type="range"> <br>
+            <label>reset</label> <input type="reset"> <br>
+            <label>search</label> <input type="search"> <br>
+            <label>submit</label> <input type="submit"> <br>
+            <label>tel</label> <input type="tel"> <br>
+            <label>text</label> <input type="text"> <br>
+            <label>time</label> <input type="time"> <br>
+            <label>url</label> <input type="url"> <br>
+
+
+            <select>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+            </select>
+
+
+            <textarea>I'm a textarea</textarea>
+        </form>
+        <br>
+
+
+        <h2>ins</h2>
+        <p>Let me insert some text <ins>here</ins>!</p>
+        <br>
+
+
+        <h2>kbd</h2>
+        <p>Let's put some <kbd>keyboard input</kbd> there.</p>
+        <br>
+
+
+        <h2>keygen</h2>
+        <form>
+            <keygen name="security">
+        </form>
+        <br>
+
+
+        <h2>ol</h2>
+        <h2>ul</h2>
+        <h2>li</h2>
+        <ul>
+            <li>Hi</li>
+        </ul>
+        <ol>
+            Hi
+        </ol>
+        <br>
+
+
+        <h2>mark</h2>
+        <p>This is <mark>marked</mark> text.</p>
+        <br>
+
+
+        <h2>nav</h2>
+        <nav>
+            <a href="#">HTML</a> |
+            <a href="#">CSS</a> |
+            <a href="#">JavaScript</a> |
+            <a href="#">jQuery</a>
+        </nav>
+        <br>
+
+
+        <h2>pre</h2>
+        <pre>Pre formatted text!</pre>
+        <br>
+
+
+        <h2>q</h2>
+        <q>I'm a short quote</q>
+        <br>
+
+
+        <h2>s</h2>
+        <s>Stricken from the record!</s>
+        <br>
+
+
+        <h2>samp</h2>
+        <samp>Sample output from a computer program.</samp>
+        <br>
+
+        <h2>section</h2>
+        <section>I'm a section</section>
+        <br>
+
+
+        <h2>small</h2>
+        <small>I'm small text</small>
+        <br>
+
+
+        <h2>span</h2>
+        <span>I'm a span</span>
+        <br>
+
+
+        <h2>strong</h2>
+        <strong>I'm strong text</strong>
+        <br>
+
+
+        <h2>sub</h2>
+        <sub>I'm sub text</sub>
+        <br>
+
+
+        <h2>summary</h2>
+        <details>
+            <summary>I'm the summary in a details element</summary>
+            <p>I'm just a p tag with details</p>
+        </details>
+        <br>
+
+
+        <h2>sup</h2>
+        <sup>I'm sup text</sup>
+        <br>
+
+
+        <h2>table</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>
+                    Table header in th
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    Table body in td
+                </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td>
+                    Table footer in td
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+        <br>
+
+
+        <h2>time</h2>
+        <time datetime="2008-02-14 20:00">I'm the date time of Valentine's Day</time>
+        <br>
+
+
+        <h2>u</h2>
+        <u>I'm underlined text</u>
+        <br>
+
+
+        <h2>var</h2>
+        <var>I'm a var</var>
+        <br>
+
+
+        <h2>video</h2>
+        <video width="320" height="240" controls>
+            <source src="https://static.videezy.com/system/resources/previews/000/002/669/original/star-trails.mp4" type="video/mp4">
+        </video>
+        <br>
+
+
+        <h2>wbr</h2>
+        <p>Veryveryveryveryveryveryveryvery<wbr>veryveryveryveryveryveryvery</p>
+        <br>
+    </div>
+    <div id="bulma-elements">
+        <h2>Bulma elements</h2>
+
+        <h3>Block</h3>
+        <div class="block">
+            This text is within a <strong>block</strong>.
+        </div>
+
+        <h3>Box</h3>
+        <div class="box">
+            I'm in a box.
+        </div>
+
+        <h3>Button</h3>
+        <button class="button">Button</button>
+        <button class="delete">Delete</button>
+
+        <h3>Notification</h3>
+        <div class="notification">
+            <button class="delete"></button>
+            Lorem ipsum dolor sit amet, consectetur
+            adipiscing elit lorem ipsum dolor. <strong>Pellentesque risus mi</strong>, tempus quis placerat ut, porta nec nulla. Vestibulum rhoncus ac ex sit amet fringilla. Nullam gravida purus diam, et dictum <a>felis venenatis</a> efficitur.
+        </div>
+
+        <h3>Progress</h3>
+        <progress class="progress" value="15" max="100">15%</progress>
+
+        <h3>Table</h3>
+        <table class="table is-striped is-hoverable">
+            <thead>
+            <tr>
+                <th><abbr title="Position">Pos</abbr></th>
+                <th>Team</th>
+                <th><abbr title="Played">Pld</abbr></th>
+                <th><abbr title="Won">W</abbr></th>
+                <th><abbr title="Drawn">D</abbr></th>
+                <th><abbr title="Lost">L</abbr></th>
+                <th><abbr title="Goals for">GF</abbr></th>
+                <th><abbr title="Goals against">GA</abbr></th>
+                <th><abbr title="Goal difference">GD</abbr></th>
+                <th><abbr title="Points">Pts</abbr></th>
+                <th>Qualification or relegation</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th>1</th>
+                <td><a href="https://en.wikipedia.org/wiki/Leicester_City_F.C." title="Leicester City F.C.">Leicester City</a> <strong>(C)</strong>
+                </td>
+                <td>38</td>
+                <td>23</td>
+                <td>12</td>
+                <td>3</td>
+                <td>68</td>
+                <td>36</td>
+                <td>+32</td>
+                <td>81</td>
+                <td>Qualification for the <a href="https://en.wikipedia.org/wiki/2016%E2%80%9317_UEFA_Champions_League#Group_stage" title="2016–17 UEFA Champions League">Champions League group stage</a></td>
+            </tr>
+            <tr>
+                <th>2</th>
+                <td><a href="https://en.wikipedia.org/wiki/Arsenal_F.C." title="Arsenal F.C.">Arsenal</a></td>
+                <td>38</td>
+                <td>20</td>
+                <td>11</td>
+                <td>7</td>
+                <td>65</td>
+                <td>36</td>
+                <td>+29</td>
+                <td>71</td>
+                <td>Qualification for the <a href="https://en.wikipedia.org/wiki/2016%E2%80%9317_UEFA_Champions_League#Group_stage" title="2016–17 UEFA Champions League">Champions League group stage</a></td>
+            </tr>
+            <tr>
+                <th>3</th>
+                <td><a href="https://en.wikipedia.org/wiki/Tottenham_Hotspur_F.C." title="Tottenham Hotspur F.C.">Tottenham Hotspur</a></td>
+                <td>38</td>
+                <td>19</td>
+                <td>13</td>
+                <td>6</td>
+                <td>69</td>
+                <td>35</td>
+                <td>+34</td>
+                <td>70</td>
+                <td>Qualification for the <a href="https://en.wikipedia.org/wiki/2016%E2%80%9317_UEFA_Champions_League#Group_stage" title="2016–17 UEFA Champions League">Champions League group stage</a></td>
+            </tr>
+            </tbody>
+        </table>
+        <h3>Tags</h3>
+        <span class="tag">Tag label</span>
+        <span class="tag is-black">Black</span>
+        <span class="tag is-dark">Dark</span>
+        <span class="tag is-light">Light</span>
+        <span class="tag is-white">White</span>
+        <span class="tag is-primary">Primary</span>
+        <span class="tag is-link">Link</span>
+        <span class="tag is-info">Info</span>
+        <span class="tag is-success">Success</span>
+        <span class="tag is-warning">Warning</span>
+        <span class="tag is-danger">Danger</span>
+
+        <h3>Titles</h3>
+        <h1 class="title is-1">Title 1</h1>
+        <h2 class="title is-2">Title 2</h2>
+        <h3 class="title is-3">Title 3</h3>
+        <h4 class="title is-4">Title 4</h4>
+        <h5 class="title is-5">Title 5</h5>
+        <h6 class="title is-6">Title 6</h6>
+
+        <h1 class="subtitle is-1">Subtitle 1</h1>
+        <h2 class="subtitle is-2">Subtitle 2</h2>
+        <h3 class="subtitle is-3">Subtitle 3</h3>
+        <h4 class="subtitle is-4">Subtitle 4</h4>
+        <h5 class="subtitle is-5">Subtitle 5</h5>
+        <h6 class="subtitle is-6">Subtitle 6</h6>
+
+    </div>
+    <div id="bulma-components">
+        <h3>Breadcrumbs</h3>
+        <nav class="breadcrumb" aria-label="breadcrumbs">
+            <ul>
+                <li><a href="#">Bulma</a></li>
+                <li><a href="#">Documentation</a></li>
+                <li><a href="#">Components</a></li>
+                <li class="is-active"><a href="#" aria-current="page">Breadcrumb</a></li>
+            </ul>
+        </nav>
+
+        <h3>Cards</h3>
+        <div class="card">
+            <div class="card-image">
+                <figure class="image is-4by3">
+                    <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+                </figure>
+            </div>
+            <div class="card-content">
+                <div class="media">
+                    <div class="media-left">
+                        <figure class="image is-48x48">
+                            <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+                        </figure>
+                    </div>
+                    <div class="media-content">
+                        <p class="title is-4">John Smith</p>
+                        <p class="subtitle is-6">@johnsmith</p>
+                    </div>
+                </div>
+
+                <div class="content">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Phasellus nec iaculis mauris. <a>@bulmaio</a>.
+                    <a href="#">#css</a> <a href="#">#responsive</a>
+                    <br>
+                    <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+                </div>
+            </div>
+        </div>
+
+        <h3>Dropdowns</h3>
+        <div class="dropdown is-active">
+            <div class="dropdown-trigger">
+                <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                    <span>Dropdown button</span>
+                </button>
+            </div>
+            <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                <div class="dropdown-content">
+                    <a href="#" class="dropdown-item">
+                        Dropdown item
+                    </a>
+                    <a class="dropdown-item">
+                        Other dropdown item
+                    </a>
+                    <a href="#" class="dropdown-item is-active">
+                        Active dropdown item
+                    </a>
+                    <a href="#" class="dropdown-item">
+                        Other dropdown item
+                    </a>
+                    <hr class="dropdown-divider">
+                    <a href="#" class="dropdown-item">
+                        With a divider
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <h3>Menu</h3>
+        <aside class="menu">
+            <p class="menu-label">
+                General
+            </p>
+            <ul class="menu-list">
+                <li><a>Dashboard</a></li>
+                <li><a>Customers</a></li>
+            </ul>
+            <p class="menu-label">
+                Administration
+            </p>
+            <ul class="menu-list">
+                <li><a>Team Settings</a></li>
+                <li>
+                    <a class="is-active">Manage Your Team</a>
+                    <ul>
+                        <li><a>Members</a></li>
+                        <li><a>Plugins</a></li>
+                        <li><a>Add a member</a></li>
+                    </ul>
+                </li>
+                <li><a>Invitations</a></li>
+                <li><a>Cloud Storage Environment Settings</a></li>
+                <li><a>Authentication</a></li>
+            </ul>
+            <p class="menu-label">
+                Transactions
+            </p>
+            <ul class="menu-list">
+                <li><a>Payments</a></li>
+                <li><a>Transfers</a></li>
+                <li><a>Balance</a></li>
+            </ul>
+        </aside>
+
+        <h3>Message</h3>
+        <article class="message">
+            <div class="message-header">
+                <p>Hello World</p>
+                <button class="delete" aria-label="delete"></button>
+            </div>
+            <div class="message-body">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. <strong>Pellentesque risus mi</strong>, tempus quis placerat ut, porta nec nulla. Vestibulum rhoncus ac ex sit amet fringilla. Nullam gravida purus diam, et dictum <a>felis venenatis</a> efficitur. Aenean ac <em>eleifend lacus</em>, in mollis lectus. Donec sodales, arcu et sollicitudin porttitor, tortor urna tempor ligula, id porttitor mi magna a neque. Donec dui urna, vehicula et sem eget, facilisis sodales sem.
+            </div>
+        </article>
+
+
+        <h3>Pagination</h3>
+        <nav class="pagination" role="navigation" aria-label="pagination">
+            <a class="pagination-previous">Previous</a>
+            <a class="pagination-next">Next page</a>
+            <ul class="pagination-list">
+                <li>
+                    <a class="pagination-link" aria-label="Goto page 1">1</a>
+                </li>
+                <li>
+                    <span class="pagination-ellipsis">&hellip;</span>
+                </li>
+                <li>
+                    <a class="pagination-link" aria-label="Goto page 45">45</a>
+                </li>
+                <li>
+                    <a class="pagination-link is-current" aria-label="Page 46" aria-current="page">46</a>
+                </li>
+                <li>
+                    <a class="pagination-link" aria-label="Goto page 47">47</a>
+                </li>
+                <li>
+                    <span class="pagination-ellipsis">&hellip;</span>
+                </li>
+                <li>
+                    <a class="pagination-link" aria-label="Goto page 86">86</a>
+                </li>
+            </ul>
+        </nav>
+
+        <h3>Tabs</h3>
+        <div class="tabs">
+            <ul>
+                <li class="is-active"><a>Pictures</a></li>
+                <li><a>Music</a></li>
+                <li><a>Videos</a></li>
+                <li><a>Documents</a></li>
+            </ul>
+        </div>
+
+        <h3>Panel</h3>
+        <nav class="panel">
+            <p class="panel-heading">
+                Repositories
+            </p>
+            <div class="panel-block">
+                <p class="control has-icons-left">
+                    <input class="input" type="text" placeholder="Search">
+                    <span class="icon is-left">
+        <i class="fas fa-search" aria-hidden="true"></i>
+        </span>
+                </p>
+            </div>
+            <p class="panel-tabs">
+                <a class="is-active">All</a>
+                <a>Public</a>
+                <a>Private</a>
+                <a>Sources</a>
+                <a>Forks</a>
+            </p>
+            <a class="panel-block is-active">
+        <span class="panel-icon">
+        <i class="fas fa-book" aria-hidden="true"></i>
+        </span>
+                bulma
+            </a>
+            <a class="panel-block">
+        <span class="panel-icon">
+        <i class="fas fa-book" aria-hidden="true"></i>
+        </span>
+                marksheet
+            </a>
+            <a class="panel-block">
+        <span class="panel-icon">
+        <i class="fas fa-book" aria-hidden="true"></i>
+        </span>
+                minireset.css
+            </a>
+            <a class="panel-block">
+        <span class="panel-icon">
+        <i class="fas fa-book" aria-hidden="true"></i>
+        </span>
+                jgthms.github.io
+            </a>
+            <a class="panel-block">
+        <span class="panel-icon">
+        <i class="fas fa-code-branch" aria-hidden="true"></i>
+        </span>
+                daniellowtw/infboard
+            </a>
+            <a class="panel-block">
+        <span class="panel-icon">
+        <i class="fas fa-code-branch" aria-hidden="true"></i>
+        </span>
+                mojs
+            </a>
+            <label class="panel-block">
+                <input type="checkbox">
+                remember me
+            </label>
+            <div class="panel-block">
+                <button class="button is-link is-outlined is-fullwidth">
+                    Reset all filters
+                </button>
+            </div>
+        </nav>
+    </div>
+    <div id="bulma-forms">
+        <div class="field">
+            <label class="label">Name</label>
+            <div class="control">
+                <input class="input" type="text" placeholder="Text input">
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label">Username</label>
+            <div class="control has-icons-left has-icons-right">
+                <input class="input is-success" type="text" placeholder="Text input" value="bulma">
+                <span class="icon is-small is-left">
+      <i class="fas fa-user"></i>
+    </span>
+                <span class="icon is-small is-right">
+      <i class="fas fa-check"></i>
+    </span>
+            </div>
+            <p class="help is-success">This username is available</p>
+        </div>
+
+        <div class="field">
+            <label class="label">Email</label>
+            <div class="control has-icons-left has-icons-right">
+                <input class="input is-danger" type="email" placeholder="Email input" value="hello@">
+                <span class="icon is-small is-left">
+      <i class="fas fa-envelope"></i>
+    </span>
+                <span class="icon is-small is-right">
+      <i class="fas fa-exclamation-triangle"></i>
+    </span>
+            </div>
+            <p class="help is-danger">This email is invalid</p>
+        </div>
+
+        <div class="field">
+            <label class="label">Subject</label>
+            <div class="control">
+                <div class="select">
+                    <select>
+                        <option>Select dropdown</option>
+                        <option>With options</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label">Message</label>
+            <div class="control">
+                <textarea class="textarea" placeholder="Textarea"></textarea>
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="control">
+                <label class="checkbox">
+                    <input type="checkbox">
+                    I agree to the <a href="#">terms and conditions</a>
+                </label>
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="control">
+                <label class="radio">
+                    <input type="radio" name="question">
+                    Yes
+                </label>
+                <label class="radio">
+                    <input type="radio" name="question">
+                    No
+                </label>
+            </div>
+        </div>
+
+        <div class="field is-grouped">
+            <div class="control">
+                <button class="button is-link">Submit</button>
+            </div>
+            <div class="control">
+                <button class="button is-link is-light">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    </body>
+</html>
