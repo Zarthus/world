@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Zarthus\World\Compiler\Compilers;
 
+use Symfony\Component\Filesystem\Filesystem;
 use Zarthus\World\App\LogAwareTrait;
 use Zarthus\World\Compiler\CompileResult;
 use Zarthus\World\Compiler\CompilerInterface;
@@ -14,7 +15,7 @@ use Zarthus\World\Container\Container;
 use Zarthus\World\Environment\Environment;
 use Zarthus\World\Exception\TemplateIllegalException;
 use Zarthus\World\Exception\TemplateNotFoundException;
-use Zarthus\World\File\MimeTypeResolver;
+use Zarthus\World\File\MimeTypeResolverInterface;
 
 /**
  * The major difference between this and {@see NoneCompiler} is that this one knows specifically
@@ -31,7 +32,8 @@ final class AssetCompiler implements CompilerInterface
     public function __construct(
         private readonly Container $container,
         private readonly Environment $environment,
-        private readonly MimeTypeResolver $mimeTypeResolver,
+        private readonly Filesystem $fs,
+        private readonly MimeTypeResolverInterface $mimeTypeResolver,
     ) {
         $this->compilerSupport = new CompilerSupport([], ['png', 'jpg', 'jpeg', 'gif', 'ico', 'woff', 'woff2', 'js']);
     }

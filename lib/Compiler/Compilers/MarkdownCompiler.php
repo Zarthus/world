@@ -6,6 +6,7 @@ namespace Zarthus\World\Compiler\Compilers;
 
 use League\CommonMark\CommonMarkConverter;
 use Symfony\Component\Finder\Finder;
+use Zarthus\World\File\MimeTypeResolverInterface;
 use Zarthus\World\App\LogAwareTrait;
 use Zarthus\World\Compiler\CompileResult;
 use Zarthus\World\Compiler\CompilerInterface;
@@ -16,7 +17,6 @@ use Zarthus\World\Container\Container;
 use Zarthus\World\Environment\Environment;
 use Zarthus\World\Exception\CompilerException;
 use Zarthus\World\Exception\TemplateNotFoundException;
-use Zarthus\World\File\MimeTypeResolver;
 
 final class MarkdownCompiler implements CompilerInterface
 {
@@ -27,7 +27,7 @@ final class MarkdownCompiler implements CompilerInterface
     public function __construct(
         private readonly Container $container,
         private readonly Environment $environment,
-        private readonly MimeTypeResolver $mimeTypeResolver,
+        private readonly MimeTypeResolverInterface $mimeTypeResolver,
     ) {
         $this->compilerSupport = new CompilerSupport(['articles'], ['md']);
     }

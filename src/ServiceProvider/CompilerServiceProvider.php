@@ -2,17 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Zarthus\World\Container\ServiceProvider;
+namespace Zarthus\World\App\ServiceProvider;
 
 use League\Container\Argument\Literal\ObjectArgument;
 use Zarthus\World\Compiler\CompilerInterface;
 use Zarthus\World\Compiler\Compilers\AssetCompiler;
+use Zarthus\World\Compiler\Compilers\DebugCompiler;
 use Zarthus\World\Compiler\Compilers\GroupCompiler;
 use Zarthus\World\Compiler\Compilers\JsonCompiler;
 use Zarthus\World\Compiler\Compilers\MarkdownCompiler;
 use Zarthus\World\Compiler\Compilers\NoneCompiler;
 use Zarthus\World\Compiler\Compilers\SassCompiler;
 use Zarthus\World\Compiler\Compilers\TwigCompiler;
+use Zarthus\World\Container\ServiceProvider\AbstractServiceProvider;
 
 final class CompilerServiceProvider extends AbstractServiceProvider
 {
@@ -24,6 +26,7 @@ final class CompilerServiceProvider extends AbstractServiceProvider
     public function register(): void
     {
         $object = new ObjectArgument(new GroupCompiler([
+            $this->getContainer()->get(DebugCompiler::class),
             $this->getContainer()->get(AssetCompiler::class),
             $this->getContainer()->get(SassCompiler::class),
             $this->getContainer()->get(MarkdownCompiler::class),

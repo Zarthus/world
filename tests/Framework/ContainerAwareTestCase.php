@@ -6,6 +6,7 @@ namespace Zarthus\World\Test\Framework;
 
 use PHPUnit\Framework\TestCase;
 use Zarthus\World\App\App;
+use Zarthus\World\App\Bootstrap;
 use Zarthus\World\Container\Container;
 
 class ContainerAwareTestCase extends TestCase
@@ -15,6 +16,7 @@ class ContainerAwareTestCase extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        Bootstrap::init();
         $this->container = App::getContainer();
     }
 

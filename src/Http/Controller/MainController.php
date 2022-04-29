@@ -19,6 +19,7 @@ use Zarthus\World\Environment\EnvVar;
 use Zarthus\World\Exception\CompilerException;
 use Zarthus\World\Exception\FileNotFoundException;
 use Zarthus\World\Exception\TemplateNotFoundException;
+use Zarthus\World\File\DirectoryMappingInterface;
 
 final class MainController
 {
@@ -27,6 +28,7 @@ final class MainController
     public function __construct(
         private readonly Environment $environment,
         private readonly CompilerInterface $compiler,
+        private readonly DirectoryMappingInterface $directoryMapping,
     ) {
     }
 
@@ -115,29 +117,17 @@ final class MainController
     /** @return array{options: CompilerOptions, template: string} */
     private function createOptions(Request $request): array
     {
-        $firstPathElement = strtok($request->getUri()->getPath(), '/');
-        $inDirectory = false === $firstPathElement ? 'html' : $firstPathElement;
-        if (!is_dir(Path::www(true) . "/$inDirectory")) {
-            $inDirectory = 'html';
-            $template = ltrim($request->getUri()->getPath(), '/');
-            $outDirectory = Path::www(false);
-        } else {
-            $template = ltrim(str_replace($inDirectory, '', $request->getUri()->getPath()), '/');
-            $outDirectory = Path::www(false) . '/' . (false === $firstPathElement ? '' : $firstPathElement);
-        }
-        $template = empty($template) ? '/' : $template;
+        $inDirectory = $outDirectory = $this->directoryMapping->resolveDirectory($request->getUri()->getPath());
+        $template = $this->directoryMapping->resolveFilePath($request->getUri()->getPath());
 
-        $secondPathElement = strtok($template, '/');
-        if (false !== $secondPathElement && is_dir(Path::www(false) . "/$secondPathElement")) {
-            $inDirectory = $secondPathElement;
-            $outDirectory = Path::www(false) . "/$secondPathElement";
-            $template = str_replace($secondPathElement . '/', '', $template);
+        if (empty($template)) {
+            $template = '/';
         }
 
         return [
             'options' => new CompilerOptions(
                 Path::www(true) . '/' . $inDirectory,
-                $outDirectory,
+                Path::www(false) . '/' . ('html' === $outDirectory ? '' : $outDirectory),
                 true,
             ),
             'template' => $template,

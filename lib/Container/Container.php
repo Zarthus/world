@@ -9,12 +9,9 @@ use League\Container\Container as LeagueContainer;
 use League\Container\ReflectionContainer;
 use Psr\Container\ContainerInterface;
 use Zarthus\World\Container\ServiceProvider\AbstractServiceProvider;
-use Zarthus\World\Container\ServiceProvider\CompilerServiceProvider;
 use Zarthus\World\Container\ServiceProvider\EnvironmentServiceProvider;
 use Zarthus\World\Container\ServiceProvider\FilePathProvider;
 use Zarthus\World\Container\ServiceProvider\LoggerServiceProvider;
-use Zarthus\World\Container\ServiceProvider\MimeTypeResolverProvider;
-use Zarthus\World\Container\ServiceProvider\SassServiceProvider;
 use Zarthus\World\Environment\Environment;
 use Zarthus\World\Environment\EnvVar;
 use Zarthus\World\Exception\SingletonException;
@@ -83,11 +80,6 @@ final class Container implements ContainerInterface
 
         $environment = $container->get(Environment::class);
         $container->delegate(new ReflectionContainer(!$environment->getBool(EnvVar::Development)));
-
-        // Add extra service providers
-        $container->addServiceProvider(new MimeTypeResolverProvider());
-        $container->addServiceProvider(new SassServiceProvider());
-        $container->addServiceProvider(new CompilerServiceProvider());
 
         $this->container = $container;
     }

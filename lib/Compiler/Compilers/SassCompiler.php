@@ -18,7 +18,7 @@ use Zarthus\World\Environment\Environment;
 use Zarthus\World\Environment\EnvVar;
 use Zarthus\World\Exception\CompilerException;
 use Zarthus\World\Exception\TemplateNotFoundException;
-use Zarthus\World\File\MimeTypeResolver;
+use Zarthus\World\File\MimeTypeResolverInterface;
 
 final class SassCompiler implements CompilerInterface
 {
@@ -30,7 +30,7 @@ final class SassCompiler implements CompilerInterface
         private readonly Container $container,
         private readonly Environment $environment,
         private readonly Sass $sassCompiler,
-        private readonly MimeTypeResolver $mimeTypeResolver,
+        private readonly MimeTypeResolverInterface $mimeTypeResolver,
     ) {
         $this->compilerSupport = new CompilerSupport(['style'], ['scss', 'sass', 'css', 'map']);
     }

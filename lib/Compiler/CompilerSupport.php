@@ -14,7 +14,7 @@ final class CompilerSupport
     public function __construct(
         private readonly array $relativeDirectories,
         private readonly array $extensions,
-        private readonly array $allowDirectoryCollisions = [],
+        private readonly bool $allowOutsideAccess = false,
         private readonly bool $prohibitDirectoryTraversalBack = true,
     ) {
     }
@@ -50,16 +50,18 @@ final class CompilerSupport
 
     private function validate(CompilerOptions $options, ?string $template): bool
     {
-        $in = $options->getInDirectory();
-
-        if (!is_dir($in)) {
-            return false;
-        }
-
         if ($this->prohibitDirectoryTraversalBack && null !== $template && str_contains($template, '..')) {
             return false;
         }
 
+        if ($options->isLiveCompilation() && $this->allowOutsideAccess) {
+            return true;
+        }
+
+        $in = $options->getInDirectory();
+        if (!is_dir($in)) {
+            return false;
+        }
         return true;
     }
 }

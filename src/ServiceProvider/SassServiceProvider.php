@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Zarthus\World\Container\ServiceProvider;
+namespace Zarthus\World\App\ServiceProvider;
 
 use League\Container\Argument\Literal\ObjectArgument;
 use Zarthus\Sass\Sass;
 use Zarthus\Sass\SassBuilder;
+use Zarthus\World\Container\ServiceProvider\AbstractServiceProvider;
 use Zarthus\World\Environment\Environment;
 use Zarthus\World\Environment\EnvVar;
 

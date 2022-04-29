@@ -13,6 +13,7 @@ use Twig\Extension\ProfilerExtension;
 use Twig\Profiler\Profile;
 use Twig\TwigFunction;
 use Zarthus\World\App\App;
+use Zarthus\World\File\MimeTypeResolverInterface;
 use Zarthus\World\App\LogAwareTrait;
 use Zarthus\World\App\Path;
 use Zarthus\World\Compiler\CompileResult;
@@ -27,7 +28,6 @@ use Zarthus\World\Environment\EnvVar;
 use Zarthus\World\Exception\CompilerException;
 use Zarthus\World\Exception\TemplateIllegalException;
 use Zarthus\World\Exception\TemplateNotFoundException;
-use Zarthus\World\File\MimeTypeResolver;
 
 final class TwigCompiler implements CompilerInterface
 {
@@ -38,7 +38,7 @@ final class TwigCompiler implements CompilerInterface
     public function __construct(
         private readonly Container $container,
         private readonly Environment $environment,
-        private readonly MimeTypeResolver $mimeTypeResolver,
+        private readonly MimeTypeResolverInterface $mimeTypeResolver,
     ) {
         $this->compilerSupport = new CompilerSupport(['api', 'html'], ['twig']);
     }

@@ -20,14 +20,14 @@ final class TwigUniqueFilesystemLoader extends FilesystemLoader
     {
         $template = $this->findTemplate($name, false);
         if (null !== $template) {
-            $templateHash = hash_file('md5', $template);
+            $templateHash = filemtime($template);
             if (false === $templateHash) {
-                $templateHash = 'miss';
+                $templateHash = 1_600_000_000;
             }
         } else {
-            $templateHash = 'miss';
+            $templateHash = 1_600_000_000;
         }
 
-        return $templateHash . parent::getCacheKey($name);
+        return dechex(abs($templateHash - 1_600_000_000)) . parent::getCacheKey($name);
     }
 }

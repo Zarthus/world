@@ -100,7 +100,8 @@
 
         "post-install-cmd": [
             "@php -r \"file_exists('.env') || (copy('.env.dist', '.env') && print('Copied over environment dist file!' . PHP_EOL));\"",
-            "@php -r \"file_exists('.php-cs-fixer') || (copy('.php-cs-fixer.dist', '.php-cs-fixer') && print('Copied over php-cs-fixer dist file!' . PHP_EOL));\""
+            "@php -r \"file_exists('.php-cs-fixer') || (copy('.php-cs-fixer.dist', '.php-cs-fixer') && print('Copied over php-cs-fixer dist file!' . PHP_EOL));\"",
+            "@php -r \"is_dir('public') || (mkdir('public') && print('Created public folder!' . PHP_EOL));\""
         ]
     },
     "config": {
