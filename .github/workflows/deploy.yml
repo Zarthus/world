@@ -13,7 +13,9 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v3
-            - name: Install dependencies
+              with:
+                  lfs: true
+            - name: Install composer dependencies
               uses: php-actions/composer@v6
               with:
                   php_version: "8.1"

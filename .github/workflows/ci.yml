@@ -15,9 +15,6 @@ jobs:
                   php_version: "8.1"
                   php_extensions: intl
                   command: 'install'
-            - name: Post composer-install
-              run: |
-                  composer run post-install-cmd
             - name: Install node dependencies
               run: |
                   npm ci
