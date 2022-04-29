@@ -1,0 +1,40 @@
+@use "../../../node_modules/bulma/sass/utilities/initial-variables" as *;
+
+$blue: #04395E;
+$cyan: #70A288;
+$green: #008000;
+$yellow: #FFD700;
+$red: #B03060;
+$lavender: #E6E6FA;
+$blackish: #1e251c;
+$ghost-white: #F8F8FF;
+$prussian-blue: #04395E;
+
+$background: #35363a;
+$text: $ghost-white;
+$text-invert: $blackish;
+$text-light: $ghost-white;
+$text-strong: $ghost-white;
+
+$primary: $prussian-blue;
+$success: $green;
+$info: $cyan;
+$warning: $yellow;
+$danger: $red;
+$light: $lavender;
+$dark: $blackish;
+
+$link: $primary;
+
+$scheme-main: #35363a;
+$scheme-main-bis: darken($scheme-main, 20%);
+$scheme-main-ter: lighten($scheme-main, 20%);
+$scheme-invert: $white;
+$scheme-invert-bis: $white-bis;
+$scheme-invert-ter: $white-ter;
+
+$family-sans-serif: system-ui, -apple-system, "Lato", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+$family-monospace: monospace;
+$family-primary: $family-sans-serif;
+$family-secondary: $family-sans-serif;
+$family-code: $family-monospace;

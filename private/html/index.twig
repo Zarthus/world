@@ -1,7 +1,14 @@
 {% extends "_layouts/default.twig" %}
 
 {% block content %}
-    <h1>Example</h1>
-    <p>Hello, {{ 'World!' }}</p>
-    foo! bar! baz! woo!
+    <section class="section">
+        <div class="container">
+            <h1 class="title">
+                Hello World
+            </h1>
+            <p class="subtitle">
+                Welcome to <strong>{{ appName }}</strong>!
+            </p>
+        </div>
+    </section>
 {% endblock %}

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{{ appName }} | {{ appTitle | default('A Fantasy World')}}</title>
+    <title>{{ appName }} | {{ appTitle | default('A Fantasy World') }}</title>
     <meta name="description" content="{{ appName }} | A Fantasy World">
     <meta name="author" content="Zarthus">
 
@@ -20,6 +20,7 @@
     {% block stylesheets %}{% endblock %}
 </head>
 <body class="no-js dark">
+
     {% block content %}{% endblock %}
 
     {% block javascript %}{% endblock %}

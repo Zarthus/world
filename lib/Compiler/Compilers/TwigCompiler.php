@@ -40,7 +40,7 @@ final class TwigCompiler implements CompilerInterface
         private readonly Environment $environment,
         private readonly MimeTypeResolverInterface $mimeTypeResolver,
     ) {
-        $this->compilerSupport = new CompilerSupport(['api', 'html'], ['twig']);
+        $this->compilerSupport = new CompilerSupport(['api', 'html'], ['twig', 'html']);
     }
 
     public function supports(CompilerOptions $options, ?string $template): bool
@@ -64,7 +64,8 @@ final class TwigCompiler implements CompilerInterface
             return true;
         }
 
-        return $this->createEngine($options)->getLoader()->exists($template);
+        $engine = $this->createEngine($options);
+        return $engine->getLoader()->exists($this->normalizeTemplate($template, $options->getInDirectory()));
     }
 
     public function compile(CompilerOptions $options): void
@@ -223,6 +224,7 @@ final class TwigCompiler implements CompilerInterface
 
     private function normalizeTemplate(string $template, string $path): string
     {
+        $template = str_replace('.html', '.twig', $template);
         if ('/' === $template || str_ends_with($template, '/')) {
             $template .= 'index';
         }
