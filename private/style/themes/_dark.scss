@@ -1,40 +1,53 @@
 @use "../../../node_modules/bulma/sass/utilities/initial-variables" as *;
+@use "../../../node_modules/bulma/sass/utilities/functions" as bulma;
+@use "subset/colors" as col;
 
-$blue: #04395E;
-$cyan: #70A288;
-$green: #008000;
-$yellow: #FFD700;
-$red: #B03060;
-$lavender: #E6E6FA;
-$blackish: #1e251c;
-$ghost-white: #F8F8FF;
-$prussian-blue: #04395E;
+$text: col.$ghost-white;
+$text-invert: col.$darkslate;
+$text-light: bulma.findLightColor($text);
+$text-strong: col.$ghost-white;
 
-$background: #35363a;
-$text: $ghost-white;
-$text-invert: $blackish;
-$text-light: $ghost-white;
-$text-strong: $ghost-white;
+$primary: col.$prussian-blue;
+$primary-light: lighten($primary, 20%);
+$success: col.$green;
+$success-light: lighten($success, 20%);
+$info: col.$cadetblue;
+$info-light: lighten($info, 20%);
+$warning: darken(col.$gold, 10%);
+$warning-light: lighten($warning, 20%);
+$danger: col.$maroon;
+$danger-light: lighten($danger, 10%);
+$light: col.$lavender;
+$dark: col.$darkslate;
 
-$primary: $prussian-blue;
-$success: $green;
-$info: $cyan;
-$warning: $yellow;
-$danger: $red;
-$light: $lavender;
-$dark: $blackish;
+$link: col.$steel-blue;
+$link-hover: lighten($link, 50%);
+$link-invert: darken($link, 25%);
+$link-light: lighten($link, 25%);
+$link-dark: bulma.findDarkColor($link);
+$link-visited: col.$purple;
 
-$link: $primary;
+//$link-active: $grey-darker !default
+//$link-focus: $grey-darker !default
+$link-hover-border: col.$darkslate;
+$link-focus-border: col.$darkslate;
+$link-active-border: col.$darkslate;
 
-$scheme-main: #35363a;
-$scheme-main-bis: darken($scheme-main, 20%);
-$scheme-main-ter: lighten($scheme-main, 20%);
-$scheme-invert: $white;
-$scheme-invert-bis: $white-bis;
-$scheme-invert-ter: $white-ter;
+$scheme-main: col.$slate;
+$scheme-main-bis: col.$slate-bis;
+$scheme-main-ter: col.$slate-ter;
+$scheme-invert: col.$ghost-white;
+$scheme-invert-bis: col.$ghost-white-bis;
+$scheme-invert-ter: col.$ghost-white-ter;
 
 $family-sans-serif: system-ui, -apple-system, "Lato", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 $family-monospace: monospace;
 $family-primary: $family-sans-serif;
 $family-secondary: $family-sans-serif;
 $family-code: $family-monospace;
+
+
+$code: darken($text, 15%);
+$code-background: col.$darkslate;
+$pre: $text;
+$pre-background: col.$darkslate;
