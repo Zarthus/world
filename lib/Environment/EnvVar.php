@@ -12,6 +12,9 @@ enum EnvVar
     case Development;
     /** The minimum loglevel, as Psr\Log\LogLevel */
     case LogLevel;
+    /**
+     * If the SAPI is a cli, attach a logger to STDOUT.
+     */
     case LogToStdout;
 
     /**
@@ -29,6 +32,7 @@ enum EnvVar
 
     /**
      * Enables SASS support, you must have a valid `sass` binary on your system (locatable by PATH env)
+     * Disabling this will speed up compilation times.
      */
     case Sass;
 

@@ -1,6 +1,6 @@
 @use '../env/env' as env;
 
 $bootstrap-icons-font: "bootstrap-icons";
-$bootstrap-icons-font-src: url(env.$webroot + "/resources/fonts/bootstrap-icons.woff2") format("woff2"), url(env.$webroot + "/resources/fonts/bootstrap-icons.woff") format("woff");
+$bootstrap-icons-font-src: url(env.$webroot + "assets/fonts/bootstrap-icons.woff2") format("woff2"), url(env.$webroot + "assets/fonts/bootstrap-icons.woff") format("woff");
 
 @import '../../../node_modules/bootstrap-icons/font/bootstrap-icons';

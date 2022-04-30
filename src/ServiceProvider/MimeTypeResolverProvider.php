@@ -17,6 +17,8 @@ final class MimeTypeResolverProvider extends AbstractServiceProvider
         'text/javascript' => ['js'],
         'application/json' => ['json', 'json.twig'],
         'image/x-icon' => ['ico'],
+        'application/font-woff' => ['woff'],
+        'application/font-woff2' => ['woff2'],
     ];
 
     public function provides(string $id): bool

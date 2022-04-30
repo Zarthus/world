@@ -62,8 +62,9 @@ final class AssetCompiler implements CompilerInterface
             throw new TemplateIllegalException($template, self::class);
         }
 
-        $asset = $options->getOutDirectory() . '/' . $template;
+        $asset = rtrim($options->getOutDirectory(), '/') . '/' . ltrim($template, '/');
         if (!file_exists($asset)) {
+            $this->getLogger()->debug('not found => ' . $asset);
             throw new TemplateNotFoundException($template, $options, self::class);
         }
 

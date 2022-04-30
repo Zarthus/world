@@ -13,6 +13,7 @@ use Twig\Extension\ProfilerExtension;
 use Twig\Profiler\Profile;
 use Twig\TwigFunction;
 use Zarthus\World\App\App;
+use Zarthus\World\Compiler\Twig\Extension\TwigExtensionProviderInterface;
 use Zarthus\World\File\MimeTypeResolverInterface;
 use Zarthus\World\App\LogAwareTrait;
 use Zarthus\World\App\Path;
@@ -39,6 +40,7 @@ final class TwigCompiler implements CompilerInterface
         private readonly Container $container,
         private readonly Environment $environment,
         private readonly MimeTypeResolverInterface $mimeTypeResolver,
+        private readonly TwigExtensionProviderInterface $extensionProvider,
     ) {
         $this->compilerSupport = new CompilerSupport(['api', 'html'], ['twig', 'html']);
     }
@@ -82,6 +84,7 @@ final class TwigCompiler implements CompilerInterface
         $finder = new Finder();
         $finder->in($options->getInDirectory())
             ->ignoreDotFiles(true)
+            ->exclude('_components')
             ->exclude('_layouts')
             ->exclude('_partials');
 
@@ -194,14 +197,8 @@ final class TwigCompiler implements CompilerInterface
             $twig->addExtension(new ProfilerExtension(new Profile()));
         }
 
-        /** @var array<string, callable> $functions */
-        $functions = [
-            'asset' => fn (string $asset): string => $this->environment->getString(EnvVar::HttpBaseDir) . $asset,
-            'path' => fn (string $path): string => $this->environment->getString(EnvVar::HttpBaseDir) . $path,
-            'url' => fn (string $url): string => $this->environment->getString(EnvVar::HttpBaseDir) . $url,
-        ];
-        foreach ($functions as $name => $fn) {
-            $twig->addFunction(new TwigFunction($name, $fn));
+        foreach ($this->extensionProvider->getExtensions() as $extension) {
+            $twig->addExtension($extension);
         }
 
         return $twig;
