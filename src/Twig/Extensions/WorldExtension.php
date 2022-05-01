@@ -19,6 +19,7 @@ final class WorldExtension extends AbstractExtension
     {
         return [
             new TwigFunction('world_name', fn () => 'Novus'),
+            new TwigFunction('world_author', fn () => 'Zarthus'),
         ];
     }
 }

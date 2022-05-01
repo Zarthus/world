@@ -1,5 +1,0 @@
-@use '../env/env' as env;
-
-$ra-font-path: env.$webroot + "assets/fonts/";
-
-@import '../../../node_modules/rpg-awesome/scss/rpg-awesome';

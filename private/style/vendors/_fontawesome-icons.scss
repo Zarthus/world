@@ -1,0 +1,4 @@
+@use '../env/env' as env;
+
+$fa-font-path: env.$webroot + "assets/fonts";
+@import '../../../node_modules/@fortawesome/fontawesome-free/scss/fontawesome';

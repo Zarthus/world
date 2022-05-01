@@ -16,12 +16,15 @@
     {% include "_partials/favicon.twig" %}
 
     <link rel="stylesheet" type="text/css" href="{{ asset('style/dark.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('style/icons.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('style/icons-bs.css') }}">
     {% block stylesheets %}{% endblock %}
 </head>
 <body class="no-js dark">
+    {% include "_components/navbar.twig" %}
 
     {% block content %}{% endblock %}
+
+    {% include "_components/footer.twig" %}
 
     {% block javascript %}{% endblock %}
 </body>
