@@ -1,6 +1,6 @@
 @font-face {
   font-family: "bootstrap-icons";
-  src: url("//resources/fonts/bootstrap-icons.woff2") format("woff2"), url("//resources/fonts/bootstrap-icons.woff") format("woff");
+  src: url("/assets/fonts/bootstrap-icons.woff2") format("woff2"), url("/assets/fonts/bootstrap-icons.woff") format("woff");
 }
 .bi::before,
 [class^=bi-]::before,
@@ -6749,4 +6749,4 @@
   content: "\f793";
 }
 
-/*# sourceMappingURL=icons.css.map */
+/*# sourceMappingURL=icons-bs.css.map */

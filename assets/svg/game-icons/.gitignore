@@ -1,0 +1,21 @@
+!.gitignore
+!CREDITS.md
+
+## Races
+!kier-heyl/elf-helmet.svg
+!kier-heyl/dwarf-helmet.svg
+!lorc/battle-axe.svg
+!lorc/visored-helm.svg
+!lorc/dragon-breath.svg
+!lorc/daemon-skull.svg
+
+## Shields (Scepters)
+!delapouite/vibrating-shield.svg
+!lorc/edged-shield.svg
+!lorc/broken-shield.svg
+!delapouite/dragon-shield.svg
+
+## Remaining
+!delapouite/burning-forest.svg
+
+*.svg
