@@ -23,7 +23,12 @@ final class SassServiceProvider extends AbstractServiceProvider
         $env = $this->container->get(Environment::class);
 
         if ($env->getBool(EnvVar::Sass)) {
-            $this->container->add(Sass::class, new ObjectArgument(SassBuilder::autodetect()));
+            $override = getenv('LIEFLAND_SASS_BINARY');
+            if (empty($override)) {
+                $this->container->add(Sass::class, new ObjectArgument(SassBuilder::autodetect()));
+            } else {
+                $this->container->add(Sass::class, new ObjectArgument(SassBuilder::fromBinaryPath($override)));
+            }
         } else {
             $this->container->add(Sass::class, new ObjectArgument(SassBuilder::withNullHandlers()));
         }

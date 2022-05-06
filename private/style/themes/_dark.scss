@@ -22,7 +22,7 @@ $dark: col.$darkslate;
 
 $link: col.$steel-blue;
 $link-hover: lighten($link, 50%);
-$link-invert: darken($link, 25%);
+$link-invert: col.$lightpurple;
 $link-light: lighten($link, 25%);
 $link-dark: bulma.findDarkColor($link);
 $link-visited: col.$purple;
@@ -51,3 +51,7 @@ $code: darken($text, 15%);
 $code-background: col.$darkslate;
 $pre: $text;
 $pre-background: col.$darkslate;
+
+// Concrete overrides:
+$menu-item-hover-background-color: $dark;
+

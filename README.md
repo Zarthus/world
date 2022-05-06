@@ -18,7 +18,7 @@ See the installation instructions for how to install & run this software.
 
 ### Prerequisites
 
-- You should have `sass` as a binary in your `$PATH` environment.
+- You should have `sass` as a binary in your `$PATH` environment, or specify `$LIEFLAND_SASS_BINARY` env.
 - PHP 8.1 or higher is required.
 
 ### Installing..

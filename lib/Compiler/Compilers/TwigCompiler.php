@@ -11,10 +11,7 @@ use Twig\Extension\CoreExtension;
 use Twig\Extension\DebugExtension;
 use Twig\Extension\ProfilerExtension;
 use Twig\Profiler\Profile;
-use Twig\TwigFunction;
 use Zarthus\World\App\App;
-use Zarthus\World\Compiler\Twig\Extension\TwigExtensionProviderInterface;
-use Zarthus\World\File\MimeTypeResolverInterface;
 use Zarthus\World\App\LogAwareTrait;
 use Zarthus\World\App\Path;
 use Zarthus\World\Compiler\CompileResult;
@@ -22,6 +19,7 @@ use Zarthus\World\Compiler\CompilerInterface;
 use Zarthus\World\Compiler\CompilerOptions;
 use Zarthus\World\Compiler\CompilerSupport;
 use Zarthus\World\Compiler\CompileType;
+use Zarthus\World\Compiler\Twig\Extension\TwigExtensionProviderInterface;
 use Zarthus\World\Compiler\Twig\TwigUniqueFilesystemLoader;
 use Zarthus\World\Container\Container;
 use Zarthus\World\Environment\Environment;
@@ -29,6 +27,7 @@ use Zarthus\World\Environment\EnvVar;
 use Zarthus\World\Exception\CompilerException;
 use Zarthus\World\Exception\TemplateIllegalException;
 use Zarthus\World\Exception\TemplateNotFoundException;
+use Zarthus\World\File\MimeTypeResolverInterface;
 
 final class TwigCompiler implements CompilerInterface
 {
@@ -225,16 +224,14 @@ final class TwigCompiler implements CompilerInterface
     private function normalizeTemplate(string $template, string $path): string
     {
         $template = str_replace('.html', '.twig', $template);
-        if ('/' === $template || str_ends_with($template, '/')) {
-            $template .= 'index';
-        }
+
         if (str_starts_with($template, '/')) {
             $template = ltrim($template, '/');
         }
 
-        $tryFiles = [$template, $template . '.twig'];
+        $tryFiles = [$template, $template . '.twig', $template . '/index.twig'];
         foreach ($tryFiles as $file) {
-            if (file_exists($path . '/' . $file)) {
+            if (!is_dir("$path/$file") && file_exists("$path/$file")) {
                 return $file;
             }
         }

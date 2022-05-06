@@ -33,6 +33,9 @@ final class JsonCompiler implements CompilerInterface
 
     public function supports(CompilerOptions $options, ?string $template): bool
     {
+        if (null !== $template && str_contains($template, '.twig')) {
+            return false;
+        }
         return $this->compilerSupport->supports($options, $template);
     }
 

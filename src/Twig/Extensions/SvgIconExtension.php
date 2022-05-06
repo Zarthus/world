@@ -18,10 +18,16 @@ final class SvgIconExtension extends AbstractExtension
         return [
             new TwigFunction(
                 'icon',
+                /** @param string[] $classes */
                 fn (string $namespace, string $name, array $classes = []): string => $this->svg("game-icons/$namespace", $name, array_merge(['icon-game'], $classes)),
                 ['is_safe' => ['html']]
             ),
-            new TwigFunction('svg', fn (string $namespace, string $name, array $classes = []): string => $this->svg($namespace, $name, $classes), ['is_safe' => ['html']]),
+            new TwigFunction(
+                'svg',
+                /** @param string[] $classes */
+                fn (string $namespace, string $name, array $classes = []): string => $this->svg($namespace, $name, $classes),
+                ['is_safe' => ['html']]
+            ),
         ];
     }
 

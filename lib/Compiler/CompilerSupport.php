@@ -33,7 +33,6 @@ final class CompilerSupport
                     return true;
                 }
             }
-            return false;
         }
 
         foreach ($this->relativeDirectories as $directory) {
@@ -54,7 +53,7 @@ final class CompilerSupport
             return false;
         }
 
-        if ($options->isLiveCompilation() && $this->allowOutsideAccess) {
+        if ($this->allowOutsideAccess && $options->isLiveCompilation()) {
             return true;
         }
 
